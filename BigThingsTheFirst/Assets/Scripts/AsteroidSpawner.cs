@@ -72,7 +72,9 @@ public class AsteroidSpawner : MonoBehaviour {
         }
 
 		curAsteroid = Instantiate (testSpawnPoint, spawnPosition, testSpawnPoint.transform.rotation) as GameObject;
+		curAsteroid.GetComponent<SphereCollider> ().radius = Random.Range (.016f, .020f);
 		ApplyForce(curAsteroid);
+
 
 		Debug.Log ("Spawn position of an asteroid : " + spawnPosition);
     }
