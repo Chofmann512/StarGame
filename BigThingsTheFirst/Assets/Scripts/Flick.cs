@@ -37,7 +37,7 @@ public class Flick : MonoBehaviour {
 	}
 	void forceAdd(){
 		gameObject.GetComponent<Rigidbody> ().AddForce ((startFlick.forward * flickForce /(flickTimer*4))* Vector3.Distance(startFlick.position,endFlick.position)); 
-
+		//gameObject.GetComponent<Rigidbody> ().velocity.magnitude
 		flickBool = false;
 		flickTimer = 0;
 	}
