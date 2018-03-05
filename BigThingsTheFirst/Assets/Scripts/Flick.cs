@@ -14,12 +14,10 @@ public class Flick : MonoBehaviour {
 	void Start () {
 		flickBool = false;
 	}
-	
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButtonDown ("Fire1")) {
 			Vector3 v3 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			Debug.Log (Vector3.Distance (v3, startFlick.position));
 			if (Vector3.Distance(v3, startFlick.position) < maxDistanceGrab) {
 				startMove = true;
 				flickBool = true;
@@ -27,8 +25,6 @@ public class Flick : MonoBehaviour {
 				flickBool = false;
 				startMove = false;
 			}
-				
-			
 		}
 		if (Input.GetButtonUp ("Fire1")&& startMove) {
 			Vector3 v3 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
