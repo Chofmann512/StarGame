@@ -10,9 +10,17 @@ public class StarDriver : MonoBehaviour {
 	private bool flickBool;
 	private bool startMove;
 	public float maxDistanceGrab;
+	public GameDriver gameDriver;
+	public string color;
+
+
 	// Use this for initialization
 	void Start () {
 		flickBool = false;
+
+		if(gameDriver == null){
+			Debug.LogError ("StarDriver is missing a reference to GameDriver, please drag a reference in.");
+		}
 	}
 	// Update is called once per frame
 	void Update () {
@@ -40,5 +48,14 @@ public class StarDriver : MonoBehaviour {
 		//gameObject.GetComponent<Rigidbody> ().velocity.magnitude
 		flickBool = false;
 		flickTimer = 0;
+	}
+
+	void OnTriggerEnter(Collider other){
+		if (other.tag == "Asteroid") {
+			gameDriver.AsteroidCollision (this.gameObject, other.gameObject);
+		} 
+		else {
+			return;
+		}
 	}
 }

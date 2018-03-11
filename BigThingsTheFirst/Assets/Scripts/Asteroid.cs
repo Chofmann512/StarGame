@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour {
 
+	public string color;
 	public float originalSpeed;
-	[SerializeField]
+
 	private float speed;
 	private bool isInitialized = false;
 
@@ -36,6 +37,15 @@ public class Asteroid : MonoBehaviour {
 		originalSpeed = rb.velocity.magnitude;
 		isInitialized = true;
 		gameObject.GetComponent<SphereCollider> ().isTrigger = false;
+
+		//DEBUG
+		rb.mass = 0.0f;
+	}
+
+	public void Reset(){
+		originalSpeed = 0;
+		speed = 0;
+		isInitialized = false;
 	}
 		
 }

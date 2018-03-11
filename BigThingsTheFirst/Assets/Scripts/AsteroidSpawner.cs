@@ -17,6 +17,7 @@ public class AsteroidSpawner : MonoBehaviour {
 	public int maxThrust = 20;//The ceiling amount of speed to apply to a newly spawned asteroid
 	public List<GameObject> asteroids = new List<GameObject>();//Data container for asteroid gameobjects
 
+	private List<GameObject> activeAsteroids;
 	private GameObject curAsteroid;//The most recently spawned asteroid
 	private Vector3 upperLeftCorner;
 	private Vector3 upperRightCorner;
@@ -44,6 +45,7 @@ public class AsteroidSpawner : MonoBehaviour {
 		dirBottomRightCorner = GameObject.Find("/SpawnBoundaries/DirectionalBottomRightCorner").transform.position;
 		Debug.Log ("Initialized upperLeftCorner at : " + GameObject.Find("/SpawnBoundaries/UpperLeftCorner").transform.position);
 
+		activeAsteroids = gameObject.GetComponent<GameDriver> ().activeAsteroids;//Set a reference to the list of spawned asteroids to push asteroids into
 		if(asteroids.Count == 0){
 			Debug.LogError ("The list 'asteroids' contained in 'AsteroidSpawner.cs' attached to '" + gameObject.name + "' is empty. Please add asteroid gameobjects to the list.");
 		}
@@ -91,6 +93,7 @@ public class AsteroidSpawner : MonoBehaviour {
 		curAsteroid.transform.position = spawnPosition;
 		curAsteroid.SetActive (true);
 		asteroids.RemoveAt (asteroidsIndex);
+		activeAsteroids.Add (curAsteroid);
 
 
 		curAsteroid.GetComponent<SphereCollider> ().radius = Random.Range (.0120f, .0149f);
