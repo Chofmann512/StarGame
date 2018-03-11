@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flick : MonoBehaviour {
+public class StarDriver : MonoBehaviour {
 	public float flickForce;
 	public Transform startFlick;
 	public Transform endFlick;
