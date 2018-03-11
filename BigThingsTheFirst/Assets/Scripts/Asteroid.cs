@@ -11,10 +11,12 @@ public class Asteroid : MonoBehaviour {
 
 	Rigidbody rb;
 
-	void Start(){
+	void Awake(){
 		rb = gameObject.GetComponent<Rigidbody> ();
-	}
+		gameObject.transform.position = GameObject.Find ("Pooling Position").transform.position;
 
+		gameObject.SetActive (false);
+	}
 
 	void Update(){
 		if (!isInitialized) {
