@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using UnityEngine.UI;
 
 public class GameDriver : MonoBehaviour {
 
@@ -14,9 +16,20 @@ public class GameDriver : MonoBehaviour {
 	public GameObject poolingPosition;
 
 
+	private GameObject startPanel;
+	private GameObject gameOverPanel;
+	private GameObject scoreText;
+
 	// Use this for initialization
 	void Start () {
 		score = 0;
+		startPanel = GameObject.Find ("/Canvas/StartPanel");
+		gameOverPanel = GameObject.Find ("/Canvas/GameOverPanel");
+		gameOverPanel.SetActive (false);//This panel needs to start out hidden
+		scoreText = GameObject.Find ("/Canvas/Score");
+		scoreText.GetComponent<Text> ().text = "Score : " + score.ToString ();
+		scoreText.SetActive (false);//Score starts out hidden while on main menu
+
 
 		asteroids = gameObject.GetComponent<AsteroidSpawner> ().asteroids;
 		if(poolingPosition == null){
@@ -41,25 +54,23 @@ public class GameDriver : MonoBehaviour {
 			asteroid.transform.position = star.transform.position;
 			asteroid.transform.parent = star.transform;
 			//After the particles have flowed in reset the asteroid
-			StartCoroutine(Repool(asteroid, poolingPosition));
+			StartCoroutine(Repool(asteroid, poolingPosition, 0.75f));
 
 		}
 		else{
-			//
-			//
 			//Game Over
 			Debug.Log("GAME OVER! :(");
-			//
-			//
+			GameOver ();
+
 		}
 	}
 
 	//Repools a game object to how it started as when the game opened
 	//TODO: possibly pass in a parameter to use in WaitForSeconds
-	IEnumerator Repool(GameObject go, GameObject origin){
-		yield return new WaitForSeconds(0.75f);
-
+	IEnumerator Repool(GameObject go, GameObject origin, float delay){
 		activeAsteroids.Remove (go);
+		yield return new WaitForSeconds(delay);
+
 		go.transform.parent = null;
 		go.transform.position = origin.transform.position;
 		go.SetActive (false);
@@ -73,13 +84,48 @@ public class GameDriver : MonoBehaviour {
 			asteroids.Add (go);
 		}
 	}
+		
 
 	public void StartGame(){
-		
+		Debug.Log ("Starting Game! :)");
+		//If there are asteroids leftover on the screen, repool them instantly
+		while(activeAsteroids.Count != 0){
+			activeAsteroids.ElementAt(0).GetComponent<SphereCollider> ().enabled = false;
+			activeAsteroids.ElementAt(0).GetComponent<Asteroid>().originalSpeed = 0;
+			activeAsteroids.ElementAt(0).GetComponent<Rigidbody> ().isKinematic = true;
+			activeAsteroids.ElementAt(0).transform.position = starCharacter.transform.position;
+			activeAsteroids.ElementAt(0).transform.parent = starCharacter.transform;
+
+			StartCoroutine (Repool (activeAsteroids.ElementAt(0), poolingPosition, 0f));
+		}
+
+		Time.timeScale = 1f;
+		//If this is the first game loop since program has opened.
+		startPanel.SetActive (false);
+		//If this is a restart set the game over panel inactive as well
+		gameOverPanel.SetActive(false);
+		starCharacter.SetActive (true);
+		scoreText.SetActive (true);
+		score = 0;
+		gameObject.GetComponent<AsteroidSpawner> ().maxThrust = 20;//Reset base asteroid speed
+
+		//TODO
+		//
+		// Reset the Star's position to the center of the screen
+		//
+		//
+
+
 	}
 
 	void GameOver(){
-		
+		Time.timeScale = 0f;
+		scoreText.SetActive (false);
+		gameOverPanel.SetActive (true);
+		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();
+		//TODO
+		//Load best personal high score and display it
+		//GameObject.Find("/Canvas/GameOverPanel/BestScoreText").GetComponent<Text>().text = ???
 	}
 
 	//Returns the current score of the game
