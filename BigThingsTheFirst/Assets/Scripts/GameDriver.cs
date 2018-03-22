@@ -6,6 +6,8 @@ public class GameDriver : MonoBehaviour {
 
 	[SerializeField]
 	private int score;
+	[SerializeField]
+	private GameObject starCharacter;
 
 	public List<GameObject> activeAsteroids = new List<GameObject>();
 	public List<GameObject> asteroids;
@@ -15,7 +17,6 @@ public class GameDriver : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		score = 0;
-		poolingPosition = GameObject.Find ("Pooling Position");
 
 		asteroids = gameObject.GetComponent<AsteroidSpawner> ().asteroids;
 		if(poolingPosition == null){
@@ -58,6 +59,7 @@ public class GameDriver : MonoBehaviour {
 	IEnumerator Repool(GameObject go, GameObject origin){
 		yield return new WaitForSeconds(0.75f);
 
+		activeAsteroids.Remove (go);
 		go.transform.parent = null;
 		go.transform.position = origin.transform.position;
 		go.SetActive (false);
@@ -70,6 +72,14 @@ public class GameDriver : MonoBehaviour {
 			go.GetComponent<Asteroid>().Reset();
 			asteroids.Add (go);
 		}
+	}
+
+	public void StartGame(){
+		
+	}
+
+	void GameOver(){
+		
 	}
 
 	//Returns the current score of the game
