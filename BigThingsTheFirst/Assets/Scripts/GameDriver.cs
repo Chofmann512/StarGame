@@ -53,6 +53,8 @@ public class GameDriver : MonoBehaviour {
 			asteroid.GetComponent<Rigidbody> ().isKinematic = true;
 			asteroid.transform.position = star.transform.position;
 			asteroid.transform.parent = star.transform;
+			//Increment score
+			LerpScore(100);//TODO: add checking for multiple asteroid catches
 			//After the particles have flowed in reset the asteroid
 			StartCoroutine(Repool(asteroid, poolingPosition, 0.75f));
 
@@ -131,5 +133,11 @@ public class GameDriver : MonoBehaviour {
 	//Returns the current score of the game
 	public int GetScore(){
 		return(score);
+	}
+
+	//TODO: add lerping of the score text
+	void LerpScore(int x){
+		score += x;
+		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 	}
 }

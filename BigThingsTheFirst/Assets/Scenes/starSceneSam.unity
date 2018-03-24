@@ -1133,7 +1133,7 @@ MonoBehaviour:
   flickTimer: 0
   maxDistanceGrab: 2
   gameDriver: {fileID: 1117350381}
-  color: Red
+  color: Blue
 --- !u!135 &639592585
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1972,7 +1972,7 @@ Prefab:
     - target: {fileID: 2300000, guid: 52964208d56dbfc42801b30fd48ee488, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 931b3bfa6d38a5d45a898b011194fb45, type: 2}
+      objectReference: {fileID: 2100000, guid: 154d46b579069b64ea1f2d87f5295911, type: 2}
     - target: {fileID: 100000, guid: 52964208d56dbfc42801b30fd48ee488, type: 3}
       propertyPath: m_IsActive
       value: 0
