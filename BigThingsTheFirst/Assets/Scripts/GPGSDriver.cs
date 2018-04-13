@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.UI;
+using UnityEngine.SocialPlatforms;
 
 public class GPGSDriver : MonoBehaviour {
 
@@ -27,6 +28,9 @@ public class GPGSDriver : MonoBehaviour {
 		//Initialize and activate the platform
 		PlayGamesPlatform.InitializeInstance(config);
 		PlayGamesPlatform.Activate ();
+
+		// Try silent sign-in (second parameter is isSilent)
+		PlayGamesPlatform.Instance.Authenticate(SignInCallback, true);
 	}
 
 	public void SignInCallback(bool success){
