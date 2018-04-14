@@ -24,6 +24,16 @@
 
 public static class GPGSIds
 {
+        public const string achievement_the_beginner = "CgkI98SbiogaEAIQBg"; // <GPGSID>
+        public const string achievement_triple = "CgkI98SbiogaEAIQDg"; // <GPGSID>
+        public const string achievement_avid_swiper = "CgkI98SbiogaEAIQCw"; // <GPGSID>
+        public const string achievement_bank_shot = "CgkI98SbiogaEAIQDA"; // <GPGSID>
+        public const string achievement_one_small_step = "CgkI98SbiogaEAIQBQ"; // <GPGSID>
+        public const string achievement_the_journeyman = "CgkI98SbiogaEAIQCQ"; // <GPGSID>
+        public const string achievement_the_apprentice = "CgkI98SbiogaEAIQCA"; // <GPGSID>
+        public const string achievement_the_novice = "CgkI98SbiogaEAIQBw"; // <GPGSID>
+        public const string achievement_the_master = "CgkI98SbiogaEAIQCg"; // <GPGSID>
+        public const string achievement_double = "CgkI98SbiogaEAIQDQ"; // <GPGSID>
         public const string leaderboard_score = "CgkI98SbiogaEAIQBA"; // <GPGSID>
 
 }

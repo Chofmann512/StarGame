@@ -65,4 +65,13 @@ public class GPGSDriver : MonoBehaviour {
 		}
 
 	}
+
+	public void ShowAchievements(){
+		if(PlayGamesPlatform.Instance.localUser.authenticated){
+			PlayGamesPlatform.Instance.ShowAchievementsUI ();
+		}
+		else{
+			Debug.Log ("Unable to show Achievements, not logged in to Google Play");
+		}
+	}
 }
