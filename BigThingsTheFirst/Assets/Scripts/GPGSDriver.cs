@@ -16,8 +16,8 @@ public class GPGSDriver : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GameObject startButton = GameObject.Find ("startButton");
-		EventSystem.current.firstSelectedGameObject = startButton;
+		GameObject startButton = GameObject.Find ("startButton");//TODO: Remove this??
+		EventSystem.current.firstSelectedGameObject = startButton;//TODO: Remove this??
 
 		//Create GPG client
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
@@ -33,6 +33,7 @@ public class GPGSDriver : MonoBehaviour {
 		PlayGamesPlatform.Instance.Authenticate(SignInCallback, true);
 	}
 
+	//Callback function after an attempted sign-in 
 	public void SignInCallback(bool success){
 		if (success) {
 			//login succeeded
@@ -50,7 +51,6 @@ public class GPGSDriver : MonoBehaviour {
 	
 	public  void SignIn(){
 		if(!PlayGamesPlatform.Instance.localUser.authenticated){
-			// TODO:
 			// Sign in with Play Game Services, showing the consent dialog
 			// by setting the second parameter to isSilent=false.
 			PlayGamesPlatform.Instance.Authenticate(SignInCallback, false);

@@ -10,6 +10,10 @@ public class GameDriver : MonoBehaviour {
 	private int score;
 	[SerializeField]
 	private GameObject starCharacter;
+	[SerializeField]
+	private float minSpawnTimerBound;
+	[SerializeField]
+	private float maxSpawnTimerBound;
 
 	public List<GameObject> activeAsteroids = new List<GameObject>();
 	public List<GameObject> asteroids;
@@ -19,6 +23,7 @@ public class GameDriver : MonoBehaviour {
 	private GameObject startPanel;
 	private GameObject gameOverPanel;
 	private GameObject scoreText;
+	private bool isGameOver = true;//Flag used to tell whether or not the game is playing
 
 	// Use this for initialization
 	void Start () {
@@ -39,9 +44,9 @@ public class GameDriver : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown("space")){
-			gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
-		}
+		//if(Input.GetKeyDown("space")){
+		//	gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
+		//}
 	}
 
 	//An event called by the StarDriver when it detects a collision with an asteroid
@@ -86,6 +91,27 @@ public class GameDriver : MonoBehaviour {
 			asteroids.Add (go);
 		}
 	}
+
+	//Recursively spawn asteroids until game is over
+	IEnumerator AsteroidTimer(float time){
+		yield return new WaitForSeconds (time);
+
+		if (!isGameOver) {
+			//Game is still going spawn an asteroid and calculate, time to spawn next asteroid
+			gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
+			//Roll for a chance to spawn a second asteroid at the same time
+			if(Random.Range(0, 11) > 8){
+				gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
+			}
+			//Recurse to the next timer
+			StartCoroutine(AsteroidTimer(Random.Range (minSpawnTimerBound, maxSpawnTimerBound)));
+		} 
+		else{
+			//Game has ended, stop recursing
+			yield return null;
+		}
+	
+	}
 		
 
 	public void StartGame(){
@@ -111,16 +137,20 @@ public class GameDriver : MonoBehaviour {
 		score = 0;
 		gameObject.GetComponent<AsteroidSpawner> ().maxThrust = 20;//Reset base asteroid speed
 
+		//Game is starting
+		isGameOver = false;
+		StartCoroutine (AsteroidTimer(3.0f));
+
 		//TODO
 		//
 		// Reset the Star's position to the center of the screen
 		//
 		//
-
-
 	}
 
 	void GameOver(){
+		//End game
+		isGameOver = true;
 		Time.timeScale = 0f;
 		scoreText.SetActive (false);
 		gameOverPanel.SetActive (true);

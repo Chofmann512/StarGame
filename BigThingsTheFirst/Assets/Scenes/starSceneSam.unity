@@ -2009,6 +2009,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: 0
   starCharacter: {fileID: 639592583}
+  minSpawnTimerBound: 2
+  maxSpawnTimerBound: 7
   activeAsteroids: []
   asteroids: []
   poolingPosition: {fileID: 1094101494}
