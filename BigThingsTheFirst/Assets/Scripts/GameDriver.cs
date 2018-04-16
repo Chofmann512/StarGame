@@ -24,9 +24,11 @@ public class GameDriver : MonoBehaviour {
 	private GameObject gameOverPanel;
 	private GameObject scoreText;
 	private bool isGameOver = true;//Flag used to tell whether or not the game is playing
-
+	private bool multiplier;
+	public int multiplierNum;
 	// Use this for initialization
 	void Start () {
+		multiplierNum = 1;
 		score = 0;
 		startPanel = GameObject.Find ("/Canvas/StartPanel");
 		gameOverPanel = GameObject.Find ("/Canvas/GameOverPanel");
@@ -53,7 +55,15 @@ public class GameDriver : MonoBehaviour {
 			asteroid.transform.parent = star.transform;
 			//Increment score
 			//LerpScore(100);//TODO: add checking for multiple asteroid catches
-			StartCoroutine(lerpScore(100));
+			if (!multiplier) {
+				StartCoroutine (lerpScore (100));
+				multiplierNum = 2;
+			} else {
+				StartCoroutine (lerpScore (100 * multiplierNum));
+				if (multiplierNum < 4) {
+					multiplierNum++;
+				}
+			}
 			//After the particles have flowed in reset the asteroid
 			StartCoroutine(Repool(asteroid, poolingPosition, 0.75f));
 
@@ -134,6 +144,7 @@ public class GameDriver : MonoBehaviour {
 		starCharacter.SetActive (true);
 		scoreText.SetActive (true);
 		score = 0;
+		multiplierNum = 1;
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 		gameObject.GetComponent<AsteroidSpawner> ().maxThrust = 20;//Reset base asteroid speed
 
@@ -168,8 +179,10 @@ public class GameDriver : MonoBehaviour {
 			score += 1;
 			scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 			countingUp += 1;
+			multiplier = true;
 			yield return new WaitForFixedUpdate ();
 		}
+		multiplier = false;
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 	}
 }
