@@ -59,7 +59,8 @@ public class GameDriver : MonoBehaviour {
 			asteroid.transform.position = star.transform.position;
 			asteroid.transform.parent = star.transform;
 			//Increment score
-			LerpScore(100);//TODO: add checking for multiple asteroid catches
+			//LerpScore(100);//TODO: add checking for multiple asteroid catches
+			StartCoroutine(lerpScore(100));
 			//After the particles have flowed in reset the asteroid
 			StartCoroutine(Repool(asteroid, poolingPosition, 0.75f));
 
@@ -90,6 +91,7 @@ public class GameDriver : MonoBehaviour {
 			go.GetComponent<Asteroid>().Reset();
 			asteroids.Add (go);
 		}
+
 	}
 
 	//Recursively spawn asteroids until game is over
@@ -135,6 +137,7 @@ public class GameDriver : MonoBehaviour {
 		starCharacter.SetActive (true);
 		scoreText.SetActive (true);
 		score = 0;
+		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 		gameObject.GetComponent<AsteroidSpawner> ().maxThrust = 20;//Reset base asteroid speed
 
 		//Game is starting
@@ -155,6 +158,8 @@ public class GameDriver : MonoBehaviour {
 		scoreText.SetActive (false);
 		gameOverPanel.SetActive (true);
 		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();
+
+		StopAllCoroutines ();
 		//TODO
 		//Load best personal high score and display it
 		//GameObject.Find("/Canvas/GameOverPanel/BestScoreText").GetComponent<Text>().text = ???
@@ -166,8 +171,14 @@ public class GameDriver : MonoBehaviour {
 	}
 
 	//TODO: add lerping of the score text
-	void LerpScore(int x){
-		score += x;
+	public IEnumerator lerpScore(int x){
+		int countingUp = 0;
+		while (countingUp<x) {
+			score += 1;
+			scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
+			countingUp += 1;
+			yield return new WaitForFixedUpdate ();
+		}
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 	}
 }

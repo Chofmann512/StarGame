@@ -27,6 +27,7 @@ public class StarDriver : MonoBehaviour {
 		if (Input.GetButtonDown ("Fire1")) {
 			Vector3 v3 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			if (Vector3.Distance(v3, startFlick.position) < maxDistanceGrab) {
+				gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				startMove = true;
 				flickBool = true;
 			} else {

@@ -10,7 +10,7 @@ public class starJitter : MonoBehaviour {
 
 	public int curColor;
 	public int tarColor;
-
+	public StarDriver starDriver;
 	public List<Material> StarColors = new List<Material>();
 
 	public List<GameObject> Trails = new List<GameObject> ();
@@ -21,13 +21,15 @@ public class starJitter : MonoBehaviour {
 	void Start () {
 		curColor = Random.Range (0, 4);
 		this.GetComponent<Renderer> ().material = StarColors [curColor];
-
+		starDriver.color = StarColors [curColor].name;
+		Trails [curColor].SetActive (true);
 		tarColor = Random.Range (0, 4);
 		if (tarColor == curColor) {
 			while (tarColor == curColor) {
 				tarColor = Random.Range (0, 4);
 			}
 		}
+
 		
 	}
 	
@@ -44,7 +46,11 @@ public class starJitter : MonoBehaviour {
 				ExplodeShells[tarColor].Play ();
 				ExplodeOut[tarColor].Play ();
 				transform.localPosition = new Vector3 (0,0,0);
+				Trails [curColor].SetActive (false);
 				curColor = tarColor;
+				Trails [curColor].SetActive (true);
+				this.GetComponent<Renderer> ().material = StarColors [curColor];
+				starDriver.color = StarColors [curColor].name;
 				if (tarColor == curColor) {
 					while (tarColor == curColor) {
 						tarColor = Random.Range (0, 4);
