@@ -41,13 +41,6 @@ public class GameDriver : MonoBehaviour {
 			Debug.LogError ("Missing a reference to a pooling position, please create an empty GO called 'Pooling Position' and place it at (20, 0, 20).");
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		//if(Input.GetKeyDown("space")){
-		//	gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
-		//}
-	}
 
 	//An event called by the StarDriver when it detects a collision with an asteroid
 	public void AsteroidCollision(GameObject star, GameObject asteroid){
@@ -102,6 +95,7 @@ public class GameDriver : MonoBehaviour {
 			//Game is still going spawn an asteroid and calculate, time to spawn next asteroid
 			gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
 			//Roll for a chance to spawn a second asteroid at the same time
+			//Between 0 and 11, max exclusive
 			if(Random.Range(0, 11) > 8){
 				gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
 			}
@@ -128,7 +122,10 @@ public class GameDriver : MonoBehaviour {
 
 			StartCoroutine (Repool (activeAsteroids.ElementAt(0), poolingPosition, 0f));
 		}
-
+		//Reset Star's position and velocity
+		starCharacter.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+		starCharacter.transform.position = new Vector3(0,1,0);
+		//Set timescale back to normal
 		Time.timeScale = 1f;
 		//If this is the first game loop since program has opened.
 		startPanel.SetActive (false);
@@ -143,12 +140,6 @@ public class GameDriver : MonoBehaviour {
 		//Game is starting
 		isGameOver = false;
 		StartCoroutine (AsteroidTimer(3.0f));
-
-		//TODO
-		//
-		// Reset the Star's position to the center of the screen
-		//
-		//
 	}
 
 	void GameOver(){
