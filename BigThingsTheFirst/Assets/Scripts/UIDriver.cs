@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class UIDriver : MonoBehaviour {
 
+	//Serialize drop down?
+	public GameObject settingsPanel;
+	public GameObject startPanel;
+
 	[SerializeField]
 	private string facebookURL;
 	[SerializeField]
@@ -30,6 +34,13 @@ public class UIDriver : MonoBehaviour {
 	}
 
 	public void LoadMainMenu(){
-		
+		settingsPanel.SetActive (false);
+
+
+		startPanel.SetActive (true);
+	}
+
+	public void ToggleSettingsPanel(){
+		settingsPanel.SetActive (!settingsPanel.activeSelf);
 	}
 }
