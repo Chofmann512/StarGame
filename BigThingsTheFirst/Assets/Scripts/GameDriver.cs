@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using GooglePlayGames;
 
 public class GameDriver : MonoBehaviour {
 
@@ -162,9 +163,18 @@ public class GameDriver : MonoBehaviour {
 		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();
 
 		StopAllCoroutines ();
-		//TODO
+		//Submit the score to the Google Play leaderboards
+		if(PlayGamesPlatform.Instance.localUser.authenticated){
+			PlayGamesPlatform.Instance.ReportScore(score, GPGSIds.leaderboard_score, 
+			(bool success) => 
+			{
+					Debug.Log("(Star Swipe) Leaderboard update success: " + success);
+			});
+		}
+		//TODO:
 		//Load best personal high score and display it
 		//GameObject.Find("/Canvas/GameOverPanel/BestScoreText").GetComponent<Text>().text = ???
+
 	}
 
 	//Returns the current score of the game
@@ -172,7 +182,7 @@ public class GameDriver : MonoBehaviour {
 		return(score);
 	}
 
-	//TODO: add lerping of the score text
+
 	public IEnumerator lerpScore(int x){
 		int countingUp = 0;
 		while (countingUp<x) {
