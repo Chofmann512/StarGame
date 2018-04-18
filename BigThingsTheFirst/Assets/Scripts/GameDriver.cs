@@ -19,14 +19,16 @@ public class GameDriver : MonoBehaviour {
 	public List<GameObject> activeAsteroids = new List<GameObject>();
 	public List<GameObject> asteroids;
 	public GameObject poolingPosition;
-
+	public int multiplierNum;
 
 	private GameObject startPanel;
 	private GameObject gameOverPanel;
 	private GameObject scoreText;
+	private GPGSDriver gpgsDriver;
 	private bool isGameOver = true;//Flag used to tell whether or not the game is playing
 	private bool multiplier;
-	public int multiplierNum;
+	private int asteroidsCaught;//Used to track and report achievement progress
+
 	// Use this for initialization
 	void Start () {
 		multiplierNum = 1;
@@ -38,7 +40,7 @@ public class GameDriver : MonoBehaviour {
 		scoreText.GetComponent<Text> ().text = "Score : " + score.ToString ();
 		scoreText.SetActive (false);//Score starts out hidden while on main menu
 
-
+		gpgsDriver = GetComponent<GPGSDriver> ();
 		asteroids = gameObject.GetComponent<AsteroidSpawner> ().asteroids;
 		if(poolingPosition == null){
 			Debug.LogError ("Missing a reference to a pooling position, please create an empty GO called 'Pooling Position' and place it at (20, 0, 20).");
@@ -48,12 +50,16 @@ public class GameDriver : MonoBehaviour {
 	//An event called by the StarDriver when it detects a collision with an asteroid
 	public void AsteroidCollision(GameObject star, GameObject asteroid){
 		if(star.GetComponent<StarDriver>().color == asteroid.GetComponent<Asteroid>().color){
+			//Report Achievement, TODO: Possibly flag this to compress calls
+			gpgsDriver.ReportAchievement("TheBeginner");
+
 			//Caught an asteroid set it under the star so the particles can flow into the star
 			asteroid.GetComponent<SphereCollider> ().enabled = false;
 			asteroid.GetComponent<Asteroid>().originalSpeed = 0;
 			asteroid.GetComponent<Rigidbody> ().isKinematic = true;
 			asteroid.transform.position = star.transform.position;
 			asteroid.transform.parent = star.transform;
+			asteroidsCaught++;
 			//Increment score
 			//LerpScore(100);//TODO: add checking for multiple asteroid catches
 			if (!multiplier) {
@@ -123,6 +129,12 @@ public class GameDriver : MonoBehaviour {
 
 	public void StartGame(){
 		Debug.Log ("Starting Game! :)");
+		//Report Achievement
+		gpgsDriver.ReportAchievement("OneSmallStep");
+		//Increment Achievement
+		gpgsDriver.ReportAchievement("AvidSwiper", 1);
+		asteroidsCaught = 0;//reset asteroid tracker
+
 		//If there are asteroids leftover on the screen, repool them instantly
 		while(activeAsteroids.Count != 0){
 			activeAsteroids.ElementAt(0).GetComponent<SphereCollider> ().enabled = false;
@@ -164,7 +176,12 @@ public class GameDriver : MonoBehaviour {
 
 		StopAllCoroutines ();
 		//Submit the score to the Google Play leaderboards
-		GetComponent<GPGSDriver>().ReportScore(score);
+		gpgsDriver.ReportScore(score);
+		//Report progress for achievements
+		gpgsDriver.ReportAchievement("TheNovice", asteroidsCaught);
+		gpgsDriver.ReportAchievement("TheApprentice", asteroidsCaught);
+		gpgsDriver.ReportAchievement ("TheJourneyman", asteroidsCaught);
+		gpgsDriver.ReportAchievement("TheMaster", asteroidsCaught);
 
 		//TODO:
 		//Load best personal high score and display it
