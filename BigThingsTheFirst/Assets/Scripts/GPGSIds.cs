@@ -29,6 +29,7 @@ public static class GPGSIds
         public const string achievement_avid_swiper = "CgkI98SbiogaEAIQCw"; // <GPGSID>
         public const string achievement_bank_shot = "CgkI98SbiogaEAIQDA"; // <GPGSID>
         public const string achievement_one_small_step = "CgkI98SbiogaEAIQBQ"; // <GPGSID>
+        public const string achievement_monochromatic = "CgkI98SbiogaEAIQDw"; // <GPGSID>
         public const string achievement_the_journeyman = "CgkI98SbiogaEAIQCQ"; // <GPGSID>
         public const string achievement_the_apprentice = "CgkI98SbiogaEAIQCA"; // <GPGSID>
         public const string achievement_the_novice = "CgkI98SbiogaEAIQBw"; // <GPGSID>

@@ -164,13 +164,8 @@ public class GameDriver : MonoBehaviour {
 
 		StopAllCoroutines ();
 		//Submit the score to the Google Play leaderboards
-		if(PlayGamesPlatform.Instance.localUser.authenticated){
-			PlayGamesPlatform.Instance.ReportScore(score, GPGSIds.leaderboard_score, 
-			(bool success) => 
-			{
-					Debug.Log("(Star Swipe) Leaderboard update success: " + success);
-			});
-		}
+		GetComponent<GPGSDriver>().ReportScore(score);
+
 		//TODO:
 		//Load best personal high score and display it
 		//GameObject.Find("/Canvas/GameOverPanel/BestScoreText").GetComponent<Text>().text = ???

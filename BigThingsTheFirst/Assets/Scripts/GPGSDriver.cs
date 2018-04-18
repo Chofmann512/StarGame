@@ -93,4 +93,128 @@ public class GPGSDriver : MonoBehaviour {
 				});
 		}
 	}
+
+	//looooooooooool RIP
+	public void ReportAchievement(string which){
+		//First check if the user is logged in
+		if(Social.localUser.authenticated){
+			switch (which) {
+			case "OneSmallStep":
+				PlayGamesPlatform.Instance.ReportProgress (
+					GPGSIds.achievement_one_small_step,
+					100.0f, (bool success) => {
+					Debug.Log ("(Star Swipe) One Small Step Unlock: " +
+					success);
+				});
+				break;
+
+			case "TheBeginner" :
+				PlayGamesPlatform.Instance.ReportProgress (
+					GPGSIds.achievement_the_beginner,
+					100.0f, (bool success) => {
+						Debug.Log ("(Star Swipe) The Beginner: " +
+							success);
+				});
+				break;
+
+			case "BankShot!" :
+				PlayGamesPlatform.Instance.ReportProgress (
+					GPGSIds.achievement_bank_shot,
+					100.0f, (bool success) => {
+						Debug.Log ("(Star Swipe) Bank Shot!: " +
+							success);
+				});
+				break;
+
+			case "Double!" :
+				PlayGamesPlatform.Instance.ReportProgress (
+					GPGSIds.achievement_double,
+					100.0f, (bool success) => {
+						Debug.Log ("(Star Swipe) Double!: " +
+							success);
+				});
+				break;
+
+			case "Tripel!" :
+				PlayGamesPlatform.Instance.ReportProgress (
+					GPGSIds.achievement_triple,
+					100.0f, (bool success) => {
+						Debug.Log ("(Star Swipe) Triple!: " +
+							success);
+				});
+				break;
+
+			case "Monochromatic" :
+				PlayGamesPlatform.Instance.ReportProgress (
+					GPGSIds.achievement_monochromatic,
+					100.0f, (bool success) => {
+						Debug.Log ("(Star Swipe) Monochromatic: " +
+							success);
+				});
+				break;
+			}
+		}
+		else{
+			Debug.Log("User is not connected to Google Play Games Services.");
+		}
+
+	}
+
+	//Overloaded function for ReportAchievement
+	public void ReportAchievement(string which, int incrementAmt){
+		//First check if the user is logged in
+		if(Social.localUser.authenticated){
+			switch (which) {
+			case "TheNovice":
+				PlayGamesPlatform.Instance.IncrementAchievement (
+					GPGSIds.achievement_the_novice,
+					incrementAmt, (bool success) => {
+						Debug.Log ("(Star Swipe) The Novice Increment of " + incrementAmt + ": " +
+							success);
+				});
+				break;
+
+			case "TheApprentice" :
+				PlayGamesPlatform.Instance.IncrementAchievement (
+					GPGSIds.achievement_the_apprentice,
+					incrementAmt, (bool success) => {
+						Debug.Log ("(Star Swipe) The Apprentice Increment of " + incrementAmt + ": " +
+							success);
+				});
+				break;
+
+			case "TheJourneyman" :
+				PlayGamesPlatform.Instance.IncrementAchievement (
+					GPGSIds.achievement_the_journeyman,
+					incrementAmt, (bool success) => {
+						Debug.Log ("(Star Swipe) The Journeyman Increment of " + incrementAmt + ": " +
+							success);
+				});
+				break;
+
+			case "TheMaster" :
+				PlayGamesPlatform.Instance.IncrementAchievement (
+					GPGSIds.achievement_the_master,
+					incrementAmt, (bool success) => {
+						Debug.Log ("(Star Swipe) The Master Increment of " + incrementAmt + ": " +
+							success);
+				});
+				break;
+
+			//Special case, we want to only increment this by 1 every time. Hard coded for safety
+			case "AvidSwiper" :
+				PlayGamesPlatform.Instance.IncrementAchievement (
+					GPGSIds.achievement_avid_swiper,
+					incrementAmt, (bool success) => {
+						Debug.Log ("(Star Swipe) Avid Swiper Increment of " + 1 + ": " +
+							success);
+				});
+				break;
+
+			}
+		}
+		else{
+			Debug.Log("User is not connected to Google Play Games Services.");
+		}
+	}
 }
