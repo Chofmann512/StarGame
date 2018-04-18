@@ -83,4 +83,14 @@ public class GPGSDriver : MonoBehaviour {
 			Debug.Log ("Unable to show Leaderboard, not logged in to Google Play");
 		}
 	}
+
+	public void ReportScore(int reportedScore){
+		if(PlayGamesPlatform.Instance.localUser.authenticated){
+			PlayGamesPlatform.Instance.ReportScore(reportedScore, GPGSIds.leaderboard_score, 
+				(bool success) => 
+				{
+					Debug.Log("(Star Swipe) Leaderboard update success: " + success);
+				});
+		}
+	}
 }
