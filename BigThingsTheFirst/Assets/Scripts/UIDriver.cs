@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIDriver : MonoBehaviour {
 
@@ -38,8 +39,7 @@ public class UIDriver : MonoBehaviour {
 		settingsPanel.SetActive (false);
 		gameOverPanel.SetActive (false);
 
-		//TODO: Reset scene
-		startPanel.SetActive (true);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 	public void ToggleSettingsPanel(){
