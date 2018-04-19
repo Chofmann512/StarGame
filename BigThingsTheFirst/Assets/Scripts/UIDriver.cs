@@ -7,6 +7,7 @@ public class UIDriver : MonoBehaviour {
 	//Serialize drop down?
 	public GameObject settingsPanel;
 	public GameObject startPanel;
+	public GameObject gameOverPanel;
 
 	[SerializeField]
 	private string facebookURL;
@@ -35,8 +36,9 @@ public class UIDriver : MonoBehaviour {
 
 	public void LoadMainMenu(){
 		settingsPanel.SetActive (false);
+		gameOverPanel.SetActive (false);
 
-
+		//TODO: Reset scene
 		startPanel.SetActive (true);
 	}
 
