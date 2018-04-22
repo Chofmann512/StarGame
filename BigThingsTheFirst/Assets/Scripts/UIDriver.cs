@@ -43,6 +43,7 @@ public class UIDriver : MonoBehaviour {
 		settingsPanel.SetActive (false);
 		gameOverPanel.SetActive (false);
 
+		Replay.isReplay = 0;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
