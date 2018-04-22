@@ -30,6 +30,7 @@ public class GameDriver : MonoBehaviour {
 	private bool multiplier;
 	private int asteroidsCaught;//Used to track and report achievement progress
 
+	//public float TimeToLerp;
 	// Use this for initialization
 	void Start () {
 		
@@ -70,10 +71,10 @@ public class GameDriver : MonoBehaviour {
 			//Increment score
 			//LerpScore(100);//TODO: add checking for multiple asteroid catches
 			if (!multiplier) {
-				StartCoroutine (lerpScore (100));
+				StartCoroutine (lerpScore (100* StarDriver.bankShot));
 				multiplierNum = 2;
 			} else {
-				StartCoroutine (lerpScore (100 * multiplierNum));
+				StartCoroutine (lerpScore (100 * multiplierNum * StarDriver.bankShot));
 				if (multiplierNum < 4) {
 					multiplierNum++;
 				}
@@ -205,15 +206,20 @@ public class GameDriver : MonoBehaviour {
 	}
 
 
+
 	public IEnumerator lerpScore(int x){
 		int countingUp = 0;
+		float TimeToLerp = 0;
 		while (countingUp<x) {
 			score += 1;
 			scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 			countingUp += 1;
 			multiplier = true;
-			yield return new WaitForFixedUpdate ();
+			yield return new WaitForSeconds ((.025f/(multiplierNum*StarDriver.bankShot)));
+
 		}
+
+
 		multiplier = false;
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 	}

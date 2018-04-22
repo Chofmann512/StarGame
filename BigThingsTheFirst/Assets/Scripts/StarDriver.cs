@@ -14,6 +14,7 @@ public class StarDriver : MonoBehaviour {
 	public string color;
 	private Vector3 startV3;
 	private Vector3 direction;
+	public static int bankShot;
 
 
 	// Use this for initialization
@@ -32,6 +33,8 @@ public class StarDriver : MonoBehaviour {
 			Vector3 v3 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			if (Vector3.Distance(v3, startFlick.position) < maxDistanceGrab) {
 				gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				CancelInvoke ("cancelBankShot");
+				bankShot = 1;
 				startMove = true;
 				flickBool = true;
 				startFlick.position = v3;
@@ -72,21 +75,22 @@ public class StarDriver : MonoBehaviour {
 			gameDriver.AsteroidCollision (this.gameObject, other.gameObject);
 		}
 		else if(other.tag == "Boundary"){
-			StartCoroutine (BankShot());
+			BankShot ();
 		}
 		else {
 			return;
 		}
 	}
 
-	IEnumerator BankShot(){
-		//SET a global flag to TRUE
+	public void BankShot(){
+		bankShot = 2;
+		CancelInvoke ("cancelBankShot");
+		Invoke ("cancelBankShot", 2f);
+	}
+	public void cancelBankShot(){
+		
+		bankShot = 1;
 
-
-		//Exit IF user taps star and SET global flag to false.
-
-		//Exit IF 'x' seconds have passed and SET global flag to false.
-		yield return null;
 	}
 
 }
