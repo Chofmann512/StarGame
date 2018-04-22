@@ -15,6 +15,10 @@ public class UIDriver : MonoBehaviour {
 	[SerializeField]
 	private string twitterURL;
 
+	public void ReplayGame(){
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
+
 	public void LoadFacebookPage(){
 		if (facebookURL == "") {
 			Debug.LogError ("Missing a reference to the URL...");

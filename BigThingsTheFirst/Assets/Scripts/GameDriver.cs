@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using GooglePlayGames;
+using UnityEngine.SceneManagement;
 
 public class GameDriver : MonoBehaviour {
 
@@ -31,6 +32,7 @@ public class GameDriver : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
 		multiplierNum = 1;
 		score = 0;
 		startPanel = GameObject.Find ("/Canvas/StartPanel");
@@ -44,6 +46,11 @@ public class GameDriver : MonoBehaviour {
 		asteroids = gameObject.GetComponent<AsteroidSpawner> ().asteroids;
 		if(poolingPosition == null){
 			Debug.LogError ("Missing a reference to a pooling position, please create an empty GO called 'Pooling Position' and place it at (20, 0, 20).");
+		}
+
+		//Is this the first StartGame()?
+		if(Replay.isReplay == 1){
+			StartGame ();
 		}
 	}
 
@@ -128,6 +135,9 @@ public class GameDriver : MonoBehaviour {
 		
 
 	public void StartGame(){
+		//Change to true that a game has been played
+		Replay.isReplay = 1;
+
 		Debug.Log ("Starting Game! :)");
 		//Report Achievement
 		gpgsDriver.ReportAchievement("OneSmallStep");

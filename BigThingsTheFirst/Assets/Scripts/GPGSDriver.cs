@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using GooglePlayGames.BasicApi.SavedGame;
+using System;
 using UnityEngine.UI;
 using UnityEngine.SocialPlatforms;
 
@@ -20,7 +22,7 @@ public class GPGSDriver : MonoBehaviour {
 		EventSystem.current.firstSelectedGameObject = startButton;//TODO: Remove this??
 
 		//Create GPG client
-		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
+		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().EnableSavedGames().Build();
 
 		//Set debugging output to true
 		PlayGamesPlatform.DebugLogEnabled = true;
@@ -216,5 +218,27 @@ public class GPGSDriver : MonoBehaviour {
 		else{
 			Debug.Log("User is not connected to Google Play Games Services.");
 		}
+	}
+
+	//Function for reading in saved game data
+	public void ReadSavedGame(string filename, Action<SavedGameRequestStatus, ISavedGameMetadata> callback){
+		ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+		savedGameClient.OpenWithAutomaticConflictResolution (filename, DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, callback);
+
+	}
+
+	//Function for writing saved game data
+	public void WriteSavedGame(ISavedGameMetadata game, byte[] savedData, Action<SavedGameRequestStatus, ISavedGameMetadata> callback){
+		SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder ()
+			.WithUpdatedPlayedTime (TimeSpan.FromMinutes (game.TotalTimePlayed.Minutes + 1))
+			.WithUpdatedDescription ("Saved at: " + System.DateTime.Now);
+		//Snapshot
+		//byte[] pngData = <PNG AS BYTES>;
+		//builder = builder.WithUpdatedPngCoverImage(pngData);
+
+		SavedGameMetadataUpdate updatedMetadata = builder.Build ();
+
+		ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+		savedGameClient.CommitUpdate (game, updatedMetadata, savedData, callback);
 	}
 }
