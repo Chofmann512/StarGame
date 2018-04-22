@@ -70,9 +70,23 @@ public class StarDriver : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		if (other.tag == "Asteroid") {
 			gameDriver.AsteroidCollision (this.gameObject, other.gameObject);
-		} 
+		}
+		else if(other.tag == "Boundary"){
+			StartCoroutine (BankShot());
+		}
 		else {
 			return;
 		}
 	}
+
+	IEnumerator BankShot(){
+		//SET a global flag to TRUE
+
+
+		//Exit IF user taps star and SET global flag to false.
+
+		//Exit IF 'x' seconds have passed and SET global flag to false.
+		yield return null;
+	}
+
 }

@@ -7756,7 +7756,7 @@ GameObject:
   - component: {fileID: 280243576}
   m_Layer: 0
   m_Name: Bottom Bound
-  m_TagString: Untagged
+  m_TagString: Boundary
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19900,7 +19900,7 @@ GameObject:
   - component: {fileID: 716100122}
   m_Layer: 0
   m_Name: Upper Bound
-  m_TagString: Untagged
+  m_TagString: Boundary
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39458,7 +39458,7 @@ GameObject:
   - component: {fileID: 1458468002}
   m_Layer: 0
   m_Name: Left Bound
-  m_TagString: Untagged
+  m_TagString: Boundary
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54685,7 +54685,7 @@ GameObject:
   - component: {fileID: 1996321713}
   m_Layer: 0
   m_Name: Right Bound
-  m_TagString: Untagged
+  m_TagString: Boundary
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
