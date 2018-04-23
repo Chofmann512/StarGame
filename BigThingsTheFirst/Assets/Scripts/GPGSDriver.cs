@@ -68,6 +68,10 @@ public class GPGSDriver : MonoBehaviour {
 
 	}
 
+	#region
+	//Leaderboard and Achievement functionality
+	#endregion
+
 	public void ShowAchievements(){
 		if(PlayGamesPlatform.Instance.localUser.authenticated){
 			PlayGamesPlatform.Instance.ShowAchievementsUI ();
@@ -220,25 +224,74 @@ public class GPGSDriver : MonoBehaviour {
 		}
 	}
 
-	//Function for reading in saved game data
-	public void ReadSavedGame(string filename, Action<SavedGameRequestStatus, ISavedGameMetadata> callback){
-		ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-		savedGameClient.OpenWithAutomaticConflictResolution (filename, DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, callback);
+	#region
+	//---------------------------------------------------------------------------------------------------------------
+	//Saving and Loading game data functionality
+	//---------------------------------------------------------------------------------------------------------------
 
+	private bool isSaving = false;
+
+	//Packages the string to save as META data to the Google Cloud
+	//Format is highscore|totalCurrency, for example 21367|22
+	private string GetSaveString(){
+		string s = "";
+		s += PlayerPrefs.GetInt ("Hiscore").ToString ();
+		s += "|";
+		s += GetComponent<GameDriver> ().GetTotalCurrency().ToString ();
+
+		return(s);
 	}
 
-	//Function for writing saved game data
-	public void WriteSavedGame(ISavedGameMetadata game, byte[] savedData, Action<SavedGameRequestStatus, ISavedGameMetadata> callback){
-		SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder ()
-			.WithUpdatedPlayedTime (TimeSpan.FromMinutes (game.TotalTimePlayed.Minutes + 1))
-			.WithUpdatedDescription ("Saved at: " + System.DateTime.Now);
-		//Snapshot
-		//byte[] pngData = <PNG AS BYTES>;
-		//builder = builder.WithUpdatedPngCoverImage(pngData);
-
-		SavedGameMetadataUpdate updatedMetadata = builder.Build ();
-
-		ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-		savedGameClient.CommitUpdate (game, updatedMetadata, savedData, callback);
+	//Unpacks the loaded string and updates the respective data fields
+	private void LoadSaveString(string save){
+		string[] data = save.Split ('|');
+		//[0] is highscore
+		//[1] is currency
+		PlayerPrefs.SetInt ("Hiscore", int.Parse (data [0]));
+		GetComponent<GameDriver> ().SetTotalCurrency(int.Parse (data[1]));
 	}
+
+	public void OpenSave(bool saving){
+		Debug.Log ("Open Save");
+
+		if (Social.localUser.authenticated) {
+			isSaving = saving;
+			((PlayGamesPlatform)Social.Active).SavedGame
+				.OpenWithAutomaticConflictResolution ("StarSwipe", GooglePlayGames.BasicApi.DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, SaveGameOpened);
+			
+		}
+	}
+
+	//Callback function
+	private void SaveGameOpened (SavedGameRequestStatus status, ISavedGameMetadata meta){
+
+		Debug.Log ("SaveGameOpened");
+		if(status == SavedGameRequestStatus.Success){
+			if(isSaving)//Writing
+			{
+				byte[] data = System.Text.ASCIIEncoding.ASCII.GetBytes ("Test Save");
+				SavedGameMetadataUpdate update = new SavedGameMetadataUpdate.Builder ().WithUpdatedDescription ("Saved at " + DateTime.Now.ToString()).Build();
+
+				((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate (meta, update, data, SaveUpdate);
+			}
+			else//Loading
+			{
+				((PlayGamesPlatform)Social.Active).SavedGame.ReadBinaryData(meta, SaveRead);
+			}
+		}
+	}
+
+	//Callback function for Load
+	private void SaveRead(SavedGameRequestStatus status, byte[] data){
+		if (status == SavedGameRequestStatus.Success) {
+			string saveData = System.Text.ASCIIEncoding.ASCII.GetString (data);
+		}
+	}
+
+	//Callback function for whether or not load was successful
+	private void SaveUpdate(SavedGameRequestStatus status, ISavedGameMetadata meta){
+		Debug.Log (status);
+	}
+
+	#endregion
 }

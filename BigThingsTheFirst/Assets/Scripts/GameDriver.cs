@@ -21,27 +21,54 @@ public class GameDriver : MonoBehaviour {
 	public List<GameObject> asteroids;
 	public GameObject poolingPosition;
 	public int multiplierNum;
+	public AudioSource scoreCount;
+
 
 	private GameObject startPanel;
 	private GameObject gameOverPanel;
 	private GameObject scoreText;
+	private GameObject bestScoreText;
 	private GPGSDriver gpgsDriver;
 	private bool isGameOver = true;//Flag used to tell whether or not the game is playing
 	private bool multiplier;
-	private int asteroidsCaught;//Used to track and report achievement progress
-	public AudioSource scoreCount;
+	private int asteroidsCaught;
+	private int totalCurrency;//Used to track the total amount of in-game currency
+	private int highestScore;//Used to load locally, the highest score achieved
+	//Used to track and report achievement progress
 	//public float TimeToLerp;
-	// Use this for initialization
+
+	public void SetTotalCurrency(int x){
+		totalCurrency = x;
+	}
+	public void SetHighestScore(int x){
+		highestScore = x;
+	}
+
+	public int GetTotalCurrency(){
+		return(totalCurrency);
+	}
+	public int GetHighestScore(){
+		return(highestScore);
+	}
+
+	//Returns the current score of the game
+	public int GetScore(){
+		return(score);
+	}
+
+
 	void Start () {
 		
 		multiplierNum = 1;
 		score = 0;
 		startPanel = GameObject.Find ("/Canvas/StartPanel");
+		bestScoreText = GameObject.Find ("/Canvas/GameOverPanel/BestScoreText");
 		gameOverPanel = GameObject.Find ("/Canvas/GameOverPanel");
 		gameOverPanel.SetActive (false);//This panel needs to start out hidden
 		scoreText = GameObject.Find ("/Canvas/Score");
 		scoreText.GetComponent<Text> ().text = "Score : " + score.ToString ();
 		scoreText.SetActive (false);//Score starts out hidden while on main menu
+		LoadHighestScoreLocal();
 
 		gpgsDriver = GetComponent<GPGSDriver> ();
 		asteroids = gameObject.GetComponent<AsteroidSpawner> ().asteroids;
@@ -184,32 +211,24 @@ public class GameDriver : MonoBehaviour {
 	void GameOver(){
 		//End game
 		isGameOver = true;
+		SubmitNewScore (score);
 		Time.timeScale = 0f;
 		scoreText.SetActive (false);
 		gameOverPanel.SetActive (true);
-		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();
+		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Show ending score for the current round
+		bestScoreText.GetComponent<Text>().text = "Best Score : " + highestScore.ToString(); //Show highest score
 
 		StopAllCoroutines ();
 		//Submit the score to the Google Play leaderboards
 		gpgsDriver.ReportScore(score);
+
 		//Report progress for achievements
 		gpgsDriver.ReportAchievement("TheNovice", asteroidsCaught);
 		gpgsDriver.ReportAchievement("TheApprentice", asteroidsCaught);
 		gpgsDriver.ReportAchievement ("TheJourneyman", asteroidsCaught);
 		gpgsDriver.ReportAchievement("TheMaster", asteroidsCaught);
 
-		//TODO:
-		//Load best personal high score and display it
-		//GameObject.Find("/Canvas/GameOverPanel/BestScoreText").GetComponent<Text>().text = ???
-
 	}
-
-	//Returns the current score of the game
-	public int GetScore(){
-		return(score);
-	}
-
-
 
 	public IEnumerator lerpScore(int x){
 		int countingUp = 0;
@@ -242,4 +261,22 @@ public class GameDriver : MonoBehaviour {
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 	}
 
+	public void SubmitNewScore(int newScore){
+		if(newScore > highestScore){
+			highestScore = newScore;
+			SaveHighestScore();
+		}
+	}
+
+	private void LoadHighestScoreLocal(){
+		if(PlayerPrefs.HasKey("Hiscore")){
+			highestScore = PlayerPrefs.GetInt ("Hiscore");
+		}
+	}
+
+	private void SaveHighestScore(){
+		PlayerPrefs.SetInt ("Hiscore", highestScore);
+		//TODO:
+		//GetComponent<GPGSDriver>(). save game data
+	}
 }

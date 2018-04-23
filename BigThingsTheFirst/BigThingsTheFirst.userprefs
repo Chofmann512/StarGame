@@ -1,13 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UIDriver.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameDriver.cs">
     <Files>
       <File FileName="Assets\Scripts\AsteroidSpawner.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GameDriver.cs" Line="54" Column="4" />
-      <File FileName="Assets\Scripts\GPGSDriver.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GameDriver.cs" Line="64" Column="45" />
+      <File FileName="Assets\Scripts\GPGSDriver.cs" Line="122" Column="19" />
       <File FileName="Assets\Scripts\GPGSIds.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UIDriver.cs" Line="46" Column="23" />
+      <File FileName="Assets\Scripts\UIDriver.cs" Line="23" Column="27" />
       <File FileName="Assets\Scripts\Replay.cs" Line="5" Column="14" />
+      <File FileName="Assets\Scripts\StarDriver.cs" Line="85" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
