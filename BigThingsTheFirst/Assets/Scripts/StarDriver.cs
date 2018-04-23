@@ -20,7 +20,7 @@ public class StarDriver : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		flickBool = false;
-
+		bankShot = 1;
 		if(gameDriver == null){
 			Debug.LogError ("StarDriver is missing a reference to GameDriver, please drag a reference in.");
 		}
