@@ -58,7 +58,10 @@ public class GameDriver : MonoBehaviour {
 	//An event called by the StarDriver when it detects a collision with an asteroid
 	public void AsteroidCollision(GameObject star, GameObject asteroid){
 		if(star.GetComponent<StarDriver>().color == asteroid.GetComponent<Asteroid>().color){
-			//Report Achievement, TODO: Possibly flag this to compress calls
+			if(StarDriver.bankShot == 2){
+				gpgsDriver.ReportAchievement ("BankShot!");
+			}
+			//TODO: Possibly compress this call below
 			gpgsDriver.ReportAchievement("TheBeginner");
 
 			//Caught an asteroid set it under the star so the particles can flow into the star
