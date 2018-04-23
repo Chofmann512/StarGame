@@ -29,7 +29,7 @@ public class GameDriver : MonoBehaviour {
 	private bool isGameOver = true;//Flag used to tell whether or not the game is playing
 	private bool multiplier;
 	private int asteroidsCaught;//Used to track and report achievement progress
-
+	public AudioSource scoreCount;
 	//public float TimeToLerp;
 	// Use this for initialization
 	void Start () {
@@ -72,12 +72,13 @@ public class GameDriver : MonoBehaviour {
 			//LerpScore(100);//TODO: add checking for multiple asteroid catches
 			if (!multiplier) {
 				StartCoroutine (lerpScore (100* StarDriver.bankShot));
-				multiplierNum = 2;
+				multiplierNum = 1;
 			} else {
-				StartCoroutine (lerpScore (100 * multiplierNum * StarDriver.bankShot));
 				if (multiplierNum < 4) {
 					multiplierNum++;
 				}
+				StartCoroutine (lerpScore (100 * multiplierNum * StarDriver.bankShot));
+
 			}
 			//After the particles have flowed in reset the asteroid
 			StartCoroutine(Repool(asteroid, poolingPosition, 0.75f));
@@ -209,18 +210,33 @@ public class GameDriver : MonoBehaviour {
 
 	public IEnumerator lerpScore(int x){
 		int countingUp = 0;
-		float TimeToLerp = 0;
-		while (countingUp<x) {
-			score += 1;
+		int bankShot = 1;
+		if (StarDriver.bankShot == 2)
+			bankShot = 2;
+		else
+			bankShot = 1;
+			
+		while (countingUp < x) {
+			if ((countingUp + 1 * multiplierNum * bankShot) > x){
+				score += x - countingUp;
+				countingUp += 1 * multiplierNum * bankShot;
+			}
+			else {
+				score += 1* multiplierNum * bankShot;
+				countingUp += 1 * multiplierNum * bankShot;	
+			}
 			scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
-			countingUp += 1;
-			multiplier = true;
-			yield return new WaitForSeconds ((.025f/(multiplierNum*StarDriver.bankShot)));
 
+			multiplier = true;
+			if (!scoreCount.isPlaying)
+				scoreCount.Play ();
+			yield return new WaitForFixedUpdate();
+			
 		}
 
 
 		multiplier = false;
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 	}
+
 }

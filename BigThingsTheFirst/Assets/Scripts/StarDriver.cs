@@ -85,7 +85,7 @@ public class StarDriver : MonoBehaviour {
 	public void BankShot(){
 		bankShot = 2;
 		CancelInvoke ("cancelBankShot");
-		Invoke ("cancelBankShot", 2f);
+		Invoke ("cancelBankShot", 1f);
 	}
 	public void cancelBankShot(){
 		
