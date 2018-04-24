@@ -69,9 +69,10 @@ public class GPGSDriver : MonoBehaviour {
 
 	}
 
-	#region
+	//---------------------------------------------------------------------------------------------------------------
 	//Leaderboard and Achievement functionality
-	#endregion
+	//---------------------------------------------------------------------------------------------------------------
+	#region
 
 	public void ShowAchievements(){
 		if(PlayGamesPlatform.Instance.localUser.authenticated){
@@ -224,11 +225,12 @@ public class GPGSDriver : MonoBehaviour {
 			Debug.Log("User is not connected to Google Play Games Services.");
 		}
 	}
+	#endregion
 
-	#region
 	//---------------------------------------------------------------------------------------------------------------
 	//Saving and Loading game data functionality
 	//---------------------------------------------------------------------------------------------------------------
+	#region
 
 	private bool isSaving = false;
 
