@@ -228,6 +228,8 @@ public class GameDriver : MonoBehaviour {
 		gpgsDriver.ReportAchievement ("TheJourneyman", asteroidsCaught);
 		gpgsDriver.ReportAchievement("TheMaster", asteroidsCaught);
 
+		//Make a Call to Upload Player Data to Google Cloud
+		gpgsDriver.OpenSave(true);
 	}
 
 	public IEnumerator lerpScore(int x){

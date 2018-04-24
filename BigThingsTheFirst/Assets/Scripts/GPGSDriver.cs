@@ -40,8 +40,9 @@ public class GPGSDriver : MonoBehaviour {
 		if (success) {
 			//login succeeded
 			Debug.Log ("(Star Swipe) Signed in!");
-			signInButtonText.text = "Sign out";
+			OpenSave (false);//Update player data from the google cloud
 
+			signInButtonText.text = "Sign out";
 			authStatus.text = "Signed in as: " + Social.localUser.userName;
 		} 
 		else {
@@ -269,7 +270,7 @@ public class GPGSDriver : MonoBehaviour {
 		if(status == SavedGameRequestStatus.Success){
 			if(isSaving)//Writing
 			{
-				byte[] data = System.Text.ASCIIEncoding.ASCII.GetBytes ("Test Save");
+				byte[] data = System.Text.ASCIIEncoding.ASCII.GetBytes (GetSaveString());
 				SavedGameMetadataUpdate update = new SavedGameMetadataUpdate.Builder ().WithUpdatedDescription ("Saved at " + DateTime.Now.ToString()).Build();
 
 				((PlayGamesPlatform)Social.Active).SavedGame.CommitUpdate (meta, update, data, SaveUpdate);
@@ -285,6 +286,7 @@ public class GPGSDriver : MonoBehaviour {
 	private void SaveRead(SavedGameRequestStatus status, byte[] data){
 		if (status == SavedGameRequestStatus.Success) {
 			string saveData = System.Text.ASCIIEncoding.ASCII.GetString (data);
+			LoadSaveString (saveData);
 		}
 	}
 
