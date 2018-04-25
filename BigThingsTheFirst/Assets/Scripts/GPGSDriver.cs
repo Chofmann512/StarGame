@@ -40,15 +40,16 @@ public class GPGSDriver : MonoBehaviour {
 		if (success) {
 			//login succeeded
 			Debug.Log ("(Star Swipe) Signed in!");
-			OpenSave (false);//Update player data from the google cloud
+			OpenSave (false);//Update local player data from the google cloud
 
-			signInButtonText.text = "Sign out";
-			authStatus.text = "Signed in as: " + Social.localUser.userName;
+		//	signInButtonText.text = "Sign out";
+		//	authStatus.text = "Signed in as: " + Social.localUser.userName;
 		} 
 		else {
 			//login failed
-			signInButtonText.text = "Sign in";
-			authStatus.text = "Sign-in failed";
+		//	signInButtonText.text = "Sign in";
+		//	authStatus.text = "Sign-in failed";
+			Debug.Log ("Sign-in failed");
 		}
 	}
 	
@@ -79,6 +80,7 @@ public class GPGSDriver : MonoBehaviour {
 			PlayGamesPlatform.Instance.ShowAchievementsUI ();
 		}
 		else{
+			GetComponent<UIDriver> ().ToggleSettingsPanel ();
 			Debug.Log ("Unable to show Achievements, not logged in to Google Play");
 		}
 	}
@@ -88,6 +90,7 @@ public class GPGSDriver : MonoBehaviour {
 			PlayGamesPlatform.Instance.ShowLeaderboardUI ();
 		}
 		else{
+			GetComponent<UIDriver> ().ToggleSettingsPanel ();
 			Debug.Log ("Unable to show Leaderboard, not logged in to Google Play");
 		}
 	}

@@ -12,6 +12,7 @@ public class UIDriver : MonoBehaviour {
 	public GameObject settingsPanel;
 	public GameObject startPanel;
 	public GameObject gameOverPanel;
+	public GameObject instructionsPanel;
 	public Button activeMusicButton;
 	public Button activeSoundFXButton;
 	public Button mutedMusicButton;
@@ -56,6 +57,10 @@ public class UIDriver : MonoBehaviour {
 
 	public void ToggleSettingsPanel(){
 		settingsPanel.SetActive (!settingsPanel.activeSelf);
+	}
+
+	public void ToggleInstructionsPanel(){
+		instructionsPanel.SetActive (!instructionsPanel.activeSelf);
 	}
 
 	public void ToggleSoundFX(){

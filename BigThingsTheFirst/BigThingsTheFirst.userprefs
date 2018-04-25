@@ -1,12 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameDriver.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UIDriver.cs">
     <Files>
       <File FileName="Assets\Scripts\AsteroidSpawner.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GameDriver.cs" Line="64" Column="45" />
-      <File FileName="Assets\Scripts\GPGSDriver.cs" Line="122" Column="19" />
+      <File FileName="Assets\Scripts\GameDriver.cs" Line="211" Column="17" />
+      <File FileName="Assets\Scripts\GPGSDriver.cs" Line="29" Column="3" />
       <File FileName="Assets\Scripts\GPGSIds.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UIDriver.cs" Line="23" Column="27" />
+      <File FileName="Assets\Scripts\UIDriver.cs" Line="84" Column="38" />
       <File FileName="Assets\Scripts\Replay.cs" Line="5" Column="14" />
       <File FileName="Assets\Scripts\StarDriver.cs" Line="85" Column="25" />
     </Files>
