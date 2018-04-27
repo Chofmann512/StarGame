@@ -7,21 +7,30 @@ public class AdDriver : MonoBehaviour {
 
 	public static AdDriver Instance{ set; get;}
 
-	public string appId;//Android app id, need another one for IOs
-	public string bannerId;
-	public string interstitialId;
+	//Android app ids
+	public string appIdAndroid;
+	public string bannerIdAndroid;
+	public string interstitialIdAndroid;
+	//IOs app ids
+	public string appIdIOs;
+	public string bannerIdIOs;
+	public string interstitialIdIOs;
 
 	private BannerView bannerView;//From GoogleMobileAds.Api
 
 	void Awake () {
 		Instance = this;
 		DontDestroyOnLoad (gameObject);
-
-		//#if UNITY_EDITOR
-		//Debug.Log("Failed to initialize MobileAds. Can not use Ads in editor.");
-		//#elif UNITY_ANDROID
-		MobileAds.Initialize(appId);
-
+		#if UNITY_EDITOR
+			return;
+		#elif UNITY_ANDROID
+			MobileAds.Initialize(appIdAndroid);
+		#elif UNITY_IOS
+			MobileAds.Initialize(appIdIOs);
+		#else
+		Debug.Log("Unsupported platform")
+		return;
+		#endif
 
 		//request a banner
 		this.RequestBannerAd();
@@ -29,7 +38,16 @@ public class AdDriver : MonoBehaviour {
 	
 	private void RequestBannerAd(){
 		//Create a BannerView
-		bannerView = new BannerView (bannerId, AdSize.Banner, AdPosition.Bottom);
+		#if UNITY_ANDROID
+			string id = bannerIdAndroid;
+		#elif UNITY_IOS
+			string id = bannerIdIOs;
+		#else
+			Debug.Log("Unsupported platform");
+			return;
+		#endif
+
+		bannerView = new BannerView (id, AdSize.Banner, AdPosition.Bottom);
 
 		//Request an ad
 		AdRequest req = new AdRequest.Builder().Build();

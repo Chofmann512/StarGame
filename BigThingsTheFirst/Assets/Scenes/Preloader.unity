@@ -180,9 +180,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69981d96ffb8f343bd6dfdd6594409e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appId: ca-app-pub-9423406163417992~7022689372
-  bannerId: ca-app-pub-3940256099942544/6300978111
-  interstitialId: ca-app-pub-3940256099942544/1033173712
+  appIdAndroid: ca-app-pub-9423406163417992~7022689372
+  bannerIdAndroid: ca-app-pub-3940256099942544/6300978111
+  interstitialIdAndroid: ca-app-pub-3940256099942544/1033173712
+  appIdIOs: ca-app-pub-9423406163417992~5908313013
+  bannerIdIOs: ca-app-pub-3940256099942544/2934735716
+  interstitialIdIOs: ca-app-pub-3940256099942544/4411468910
 --- !u!4 &480661214
 Transform:
   m_ObjectHideFlags: 0
