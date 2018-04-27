@@ -167,6 +167,11 @@ public class GameDriver : MonoBehaviour {
 		
 
 	public void StartGame(){
+		//AD//Start loading a new interstitial ad to play when the game ends
+		AdDriver.Instance.RequestInterstitialAd();
+		//Increment ad interval
+		AdDriver.Instance.loadCount++;
+
 		//Change to true that a game has been played
 		Replay.isReplay = 1;
 
@@ -217,6 +222,12 @@ public class GameDriver : MonoBehaviour {
 		gameOverPanel.SetActive (true);
 		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Show ending score for the current round
 		bestScoreText.GetComponent<Text>().text = "Best Score : " + highestScore.ToString(); //Show highest score
+
+		//Attempt to show interstitial
+		if(AdDriver.Instance.loadCount % AdDriver.Instance.interstitialInterval == 0){
+			AdDriver.Instance.loadCount = 0;//Reset the loadcount
+			AdDriver.Instance.ShowInterstitial();
+		}
 
 		StopAllCoroutines ();
 		//Submit the score to the Google Play leaderboards

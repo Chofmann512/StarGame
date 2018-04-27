@@ -180,6 +180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69981d96ffb8f343bd6dfdd6594409e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadCount: 0
+  interstitialInterval: 3
   appIdAndroid: ca-app-pub-9423406163417992~7022689372
   bannerIdAndroid: ca-app-pub-3940256099942544/6300978111
   interstitialIdAndroid: ca-app-pub-3940256099942544/1033173712
