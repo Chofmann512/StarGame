@@ -18,8 +18,8 @@ public class GPGSDriver : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GameObject startButton = GameObject.Find ("startButton");//TODO: Remove this??
-		EventSystem.current.firstSelectedGameObject = startButton;//TODO: Remove this??
+	//	GameObject startButton = GameObject.Find ("startButton");//TODO: Remove this??
+	//	EventSystem.current.firstSelectedGameObject = startButton;//TODO: Remove this??
 
 		//Create GPG client
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().EnableSavedGames().Build();
@@ -42,13 +42,10 @@ public class GPGSDriver : MonoBehaviour {
 			Debug.Log ("(Star Swipe) Signed in!");
 			OpenSave (false);//Update local player data from the google cloud
 
-		//	signInButtonText.text = "Sign out";
-		//	authStatus.text = "Signed in as: " + Social.localUser.userName;
 		} 
 		else {
 			//login failed
-		//	signInButtonText.text = "Sign in";
-		//	authStatus.text = "Sign-in failed";
+
 			Debug.Log ("Sign-in failed");
 		}
 	}

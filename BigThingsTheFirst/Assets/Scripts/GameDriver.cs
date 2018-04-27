@@ -274,19 +274,21 @@ public class GameDriver : MonoBehaviour {
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 	}
 
+	//Checks if the achieved score is a new all time best
 	public void SubmitNewScore(int newScore){
 		if(newScore > highestScore){
 			highestScore = newScore;
 			SaveHighestScore();
 		}
 	}
-
+		
 	private void LoadHighestScoreLocal(){
 		if(PlayerPrefs.HasKey("Hiscore")){
 			highestScore = PlayerPrefs.GetInt ("Hiscore");
 		}
 	}
 
+	//Sets the locally saved high score to the value held in highestScore
 	private void SaveHighestScore(){
 		PlayerPrefs.SetInt ("Hiscore", highestScore);
 		//TODO:
