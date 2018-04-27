@@ -167,10 +167,15 @@ public class GameDriver : MonoBehaviour {
 		
 
 	public void StartGame(){
-		//AD//Start loading a new interstitial ad to play when the game ends
-		AdDriver.Instance.RequestInterstitialAd();
-		//Increment ad interval
-		AdDriver.Instance.loadCount++;
+
+		//Pre-processor directive to not call ads in the unity editor
+		#if UNITY_EDITOR
+		#else
+			//AD//Start loading a new interstitial ad to play when the game ends
+			AdDriver.Instance.RequestInterstitialAd();
+			//Increment ad interval
+			AdDriver.Instance.loadCount++;
+		#endif
 
 		//Change to true that a game has been played
 		Replay.isReplay = 1;

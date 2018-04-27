@@ -23,6 +23,17 @@ public class UIDriver : MonoBehaviour {
 	[SerializeField]
 	private string twitterURL;
 
+	public void Start(){
+		//If this is the very first time playing, show instructions
+		if(PlayerPrefs.GetInt("Tutorial") != 1){
+			//Pop-up instructions
+			ToggleInstructionsPanel();
+			//flag that the user has seen the instructions for the first time
+			PlayerPrefs.SetInt("Tutorial", 1);
+			return;
+		}
+	}
+
 	public void ReplayGame(){
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}

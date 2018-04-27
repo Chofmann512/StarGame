@@ -11,10 +11,10 @@ using UnityEngine.SocialPlatforms;
 
 public class GPGSDriver : MonoBehaviour {
 
-	[SerializeField]
-	private Text signInButtonText;
-	[SerializeField]
-	private Text authStatus;
+	//[SerializeField]
+	//private Text signInButtonText;
+	//[SerializeField]
+	//private Text authStatus;
 
 	// Use this for initialization
 	void Start () {
@@ -61,8 +61,8 @@ public class GPGSDriver : MonoBehaviour {
 			PlayGamesPlatform.Instance.SignOut();
 
 			// Reset UI
-			signInButtonText.text = "Sign In";
-			authStatus.text = "";
+			//signInButtonText.text = "Sign In";
+			//authStatus.text = "";
 		}
 
 	}
