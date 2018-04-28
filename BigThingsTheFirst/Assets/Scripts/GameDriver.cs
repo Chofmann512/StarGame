@@ -225,7 +225,8 @@ public class GameDriver : MonoBehaviour {
 		Time.timeScale = 0f;
 		//TODO: Rewrite this using UIDriver for consistency
 		scoreText.SetActive (false);
-		gameOverPanel.SetActive (true);
+		//gameOverPanel.SetActive (true);
+		GetComponent<UIDriver>().ToggleGameOverPanel();
 		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Show ending score for the current round
 		bestScoreText.GetComponent<Text>().text = "Best Score : " + highestScore.ToString(); //Show highest score
 		GameObject.Find("/Canvas/GameOverPanel").GetComponentInChildren<Animator>().Play("Text_Breathe");

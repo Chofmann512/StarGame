@@ -22,16 +22,27 @@ public class UIDriver : MonoBehaviour {
 	private string facebookURL;
 	[SerializeField]
 	private string twitterURL;
+	private enum UI {Menu, Settings, Instructions, GameOver};
+	private UI curUI;
+
+	public void Update(){
+		if(Input.GetKeyDown(KeyCode.Escape)){
+			HandleEscapeInput ();
+		}
+	}
 
 	public void Start(){
+
 		//If this is the very first time playing, show instructions
 		if(PlayerPrefs.GetInt("Tutorial") != 1){
 			//Pop-up instructions
 			ToggleInstructionsPanel();
+			curUI = UI.Instructions;
 			//flag that the user has seen the instructions for the first time
 			PlayerPrefs.SetInt("Tutorial", 1);
 			return;
 		}
+		curUI = UI.Menu;
 	}
 
 	public void ReplayGame(){
@@ -66,12 +77,27 @@ public class UIDriver : MonoBehaviour {
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
+	public void ToggleGameOverPanel(){
+		gameOverPanel.SetActive (true);
+		curUI = UI.GameOver;
+	}
+
 	public void ToggleSettingsPanel(){
 		settingsPanel.SetActive (!settingsPanel.activeSelf);
+		if (settingsPanel.activeSelf) {
+			curUI = UI.Settings;
+		} else {
+			curUI = UI.Menu;
+		}
 	}
 
 	public void ToggleInstructionsPanel(){
 		instructionsPanel.SetActive (!instructionsPanel.activeSelf);
+		if (instructionsPanel.activeSelf) {
+			curUI = UI.Instructions;
+		} else {
+			curUI = UI.Menu;
+		}
 	}
 
 	public void ToggleSoundFX(){
@@ -102,6 +128,30 @@ public class UIDriver : MonoBehaviour {
 			mutedMusicButton.gameObject.SetActive (false);
 
 			//TODO: Unmute the music sound channel
+		}
+	}
+
+	public void HandleEscapeInput(){
+		switch(curUI)
+		{
+		case UI.Menu:
+			Application.Quit();
+			break;
+
+		case UI.Settings:
+			ToggleSettingsPanel ();
+			break;
+		
+		case UI.Instructions:
+			ToggleInstructionsPanel ();
+			break;
+
+		case UI.GameOver:
+			LoadMainMenu ();
+			break;
+		default:
+			Debug.LogError ("Found a new case for handling escape key input.");
+			break;
 		}
 	}
 }
