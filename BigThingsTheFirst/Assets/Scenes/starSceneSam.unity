@@ -55274,6 +55274,7 @@ GameObject:
   - component: {fileID: 1966938065}
   - component: {fileID: 1966938064}
   - component: {fileID: 1966938063}
+  - component: {fileID: 1966938067}
   m_Layer: 5
   m_Name: PlayAgainText
   m_TagString: Untagged
@@ -55366,6 +55367,23 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1966938061}
+--- !u!95 &1966938067
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1966938061}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9ec3346cbae2b2240b494589a04b1de3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &1974285993
 GameObject:
   m_ObjectHideFlags: 0

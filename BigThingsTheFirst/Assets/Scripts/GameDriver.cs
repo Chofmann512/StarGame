@@ -223,16 +223,23 @@ public class GameDriver : MonoBehaviour {
 		isGameOver = true;
 		SubmitNewScore (score);
 		Time.timeScale = 0f;
+		//TODO: Rewrite this using UIDriver for consistency
 		scoreText.SetActive (false);
 		gameOverPanel.SetActive (true);
 		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Show ending score for the current round
 		bestScoreText.GetComponent<Text>().text = "Best Score : " + highestScore.ToString(); //Show highest score
+		GameObject.Find("/Canvas/GameOverPanel").GetComponentInChildren<Animator>().Play("Text_Breathe");
 
+
+		//Pre-processor directive to not call ads in the unity editor
+		#if UNITY_EDITOR
+		#else
 		//Attempt to show interstitial
 		if(AdDriver.Instance.loadCount % AdDriver.Instance.interstitialInterval == 0){
-			AdDriver.Instance.loadCount = 0;//Reset the loadcount
-			AdDriver.Instance.ShowInterstitial();
+		AdDriver.Instance.loadCount = 0;//Reset the loadcount
+		AdDriver.Instance.ShowInterstitial();
 		}
+		#endif
 
 		StopAllCoroutines ();
 		//Submit the score to the Google Play leaderboards
