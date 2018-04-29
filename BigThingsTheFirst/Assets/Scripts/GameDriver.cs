@@ -58,7 +58,8 @@ public class GameDriver : MonoBehaviour {
 
 
 	void Start () {
-		
+		Time.timeScale = 1.0f;//If the scene was reloaded, set timescale back to normal
+
 		multiplierNum = 1;
 		score = 0;
 		startPanel = GameObject.Find ("/Canvas/StartPanel");
