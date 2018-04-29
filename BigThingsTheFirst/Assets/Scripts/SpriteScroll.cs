@@ -15,6 +15,6 @@ public class SpriteScroll : MonoBehaviour {
 	void FixedUpdate () {
 		float OffsetX = Time.time * ScrollX;
 		float OffsetY = Time.time * ScrollY;
-		GetComponent<RawImage>().material.mainTextureOffset= new Vector2 (OffsetX, OffsetY);
+		GetComponent<RawImage>().uvRect= new Rect (OffsetX, OffsetY,1,1);
 	}
 }
