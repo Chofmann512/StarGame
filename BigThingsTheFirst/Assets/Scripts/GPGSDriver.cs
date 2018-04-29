@@ -41,6 +41,7 @@ public class GPGSDriver : MonoBehaviour {
 			//login succeeded
 			Debug.Log ("(Star Swipe) Signed in!");
 			OpenSave (false);//Update local player data from the google cloud
+			GetComponent<UIDriver> ().ToggleSignInButtons ();
 
 		} 
 		else {
@@ -59,7 +60,7 @@ public class GPGSDriver : MonoBehaviour {
 		else{
 			// Sign out of play games
 			PlayGamesPlatform.Instance.SignOut();
-
+			GetComponent<UIDriver> ().ToggleSignInButtons ();
 			// Reset UI
 			//signInButtonText.text = "Sign In";
 			//authStatus.text = "";

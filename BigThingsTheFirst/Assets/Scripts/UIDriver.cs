@@ -17,6 +17,8 @@ public class UIDriver : MonoBehaviour {
 	public Button activeSoundFXButton;
 	public Button mutedMusicButton;
 	public Button mutedSoundFXButton;
+	public Button googleSignInButton;
+	public Button googleSignOutButton;
 
 	[SerializeField]
 	private string facebookURL;
@@ -75,6 +77,16 @@ public class UIDriver : MonoBehaviour {
 
 		Replay.isReplay = 0;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
+
+	public void ToggleSignInButtons(){
+		if (googleSignInButton.IsActive ()) {
+			googleSignInButton.gameObject.SetActive (false);
+			googleSignOutButton.gameObject.SetActive (true);
+		} else {
+			googleSignInButton.gameObject.SetActive (true);
+			googleSignOutButton.gameObject.SetActive (false);
+		}
 	}
 
 	public void ToggleGameOverPanel(){
