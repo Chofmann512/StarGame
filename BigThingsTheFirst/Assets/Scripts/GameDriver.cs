@@ -22,6 +22,8 @@ public class GameDriver : MonoBehaviour {
 	public GameObject poolingPosition;
 	public int multiplierNum;
 	public AudioSource scoreCount;
+    public AudioSource menuMusic;
+    public AudioSource gameMusic;
 
 
 	private GameObject startPanel;
@@ -45,6 +47,7 @@ public class GameDriver : MonoBehaviour {
 	}
 
 	public int GetTotalCurrency(){
+        //Backklogged
 		return(totalCurrency);
 	}
 	public int GetHighestScore(){
@@ -59,6 +62,7 @@ public class GameDriver : MonoBehaviour {
 
 	void Start () {
 		Time.timeScale = 1.0f;//If the scene was reloaded, set timescale back to normal
+        menuMusic.Play();
 
 		multiplierNum = 1;
 		score = 0;
@@ -214,13 +218,16 @@ public class GameDriver : MonoBehaviour {
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 		gameObject.GetComponent<AsteroidSpawner> ().maxThrust = 20;//Reset base asteroid speed
 
-		//Game is starting
+        //Game is starting
+        menuMusic.Stop();
+        gameMusic.Play();
 		isGameOver = false;
 		StartCoroutine (AsteroidTimer(3.0f));
 	}
 
 	void GameOver(){
-		//End game
+        //End game
+        gameMusic.Stop();
 		isGameOver = true;
 		SubmitNewScore (score);
 		Time.timeScale = 0f;
