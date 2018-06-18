@@ -17,6 +17,7 @@ public class StarDriver : MonoBehaviour {
 	public static int bankShot;
     public AudioSource starSwipeSound;
     public GameObject soundEffectManager;
+    public UIDriver uiDriver;
 
 	// Use this for initialization
 	void Start () {
@@ -94,13 +95,15 @@ public class StarDriver : MonoBehaviour {
 	public void BankShot(){
 		bankShot = 2;
 		CancelInvoke ("cancelBankShot");
-		Invoke ("cancelBankShot", 1f);
+		Invoke ("cancelBankShot", 1.4f);
+        uiDriver.UpdateMultiplierText(bankShot * GameDriver.multiplierNum);
         //callNum
 	}
 	public void cancelBankShot(){
 		
 		bankShot = 1;
+        uiDriver.UpdateMultiplierText(bankShot * GameDriver.multiplierNum);
         //callNum
-	}
+    }
 
 }
