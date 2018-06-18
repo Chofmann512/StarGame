@@ -21,6 +21,7 @@ public class UIDriver : MonoBehaviour {
 	public Button mutedSoundFXButton;
 	public Button googleSignInButton;
 	public Button googleSignOutButton;
+    public Text scoreMultiplierText;
 
 	[SerializeField]
 	private string facebookURL;
@@ -63,6 +64,16 @@ public class UIDriver : MonoBehaviour {
 
 
 	}
+
+    public void UpdateMultiplierText(int amt) {
+        if (amt <= 1)
+        {
+            scoreMultiplierText.text = "";
+        }
+        else {
+            scoreMultiplierText.text = amt + "X";
+        }
+    }
 
 	public void LoadTwitterPage(){
 		if (twitterURL == "") {
