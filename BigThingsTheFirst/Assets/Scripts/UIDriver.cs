@@ -21,6 +21,8 @@ public class UIDriver : MonoBehaviour {
 	public Button mutedSoundFXButton;
 	public Button googleSignInButton;
 	public Button googleSignOutButton;
+    public Button pauseButton;
+    public Button unpauseButton;
     public Text scoreMultiplierText;
 
 	[SerializeField]
@@ -185,6 +187,25 @@ public class UIDriver : MonoBehaviour {
 			//TODO: Unmute the music sound channel
 		}
 	}
+
+    public void TogglePause() {
+        if (pauseButton.IsActive()) {
+            pauseButton.gameObject.SetActive(false);
+            unpauseButton.gameObject.SetActive(true);
+            Time.timeScale = 0.0f;
+
+            gameObject.GetComponent<GameDriver>().scoreCount.Pause();
+            gameObject.GetComponent<GameDriver>().gameMusic.Pause();
+        }
+        else if (unpauseButton.IsActive()) {
+            unpauseButton.gameObject.SetActive(false);
+            pauseButton.gameObject.SetActive(true);
+            Time.timeScale = 1.0f;
+
+            gameObject.GetComponent<GameDriver>().scoreCount.UnPause();
+            gameObject.GetComponent<GameDriver>().gameMusic.UnPause();
+        }
+    }
 
 	public void HandleEscapeInput(){
 		switch(curUI)

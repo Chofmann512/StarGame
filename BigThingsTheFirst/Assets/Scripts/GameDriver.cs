@@ -228,6 +228,7 @@ public class GameDriver : MonoBehaviour {
 		gameOverPanel.SetActive(false);
 		starCharacter.SetActive (true);
 		scoreText.SetActive (true);
+        uiDriver.pauseButton.gameObject.SetActive(true);
 		score = 0;
 		multiplierNum = 1;
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
