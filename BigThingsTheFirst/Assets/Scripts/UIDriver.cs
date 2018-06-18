@@ -13,6 +13,8 @@ public class UIDriver : MonoBehaviour {
 	public GameObject startPanel;
 	public GameObject gameOverPanel;
 	public GameObject instructionsPanel;
+    public GameObject musicManager;
+    public GameObject soundEffectManager;
 	public Button activeMusicButton;
 	public Button activeSoundFXButton;
 	public Button mutedMusicButton;
@@ -117,13 +119,13 @@ public class UIDriver : MonoBehaviour {
 			
 			activeSoundFXButton.gameObject.SetActive (false);
 			mutedSoundFXButton.gameObject.SetActive (true);
-
+            soundEffectManager.SetActive(false);
 			//TODO: Mute the SoundFX sound channel
 		}
 		else if(mutedSoundFXButton.IsActive()){
 			activeSoundFXButton.gameObject.SetActive (true);
 			mutedSoundFXButton.gameObject.SetActive (false);
-
+            soundEffectManager.SetActive(true);
 			//TODO: Unmute the SoundFX sound channel
 		}
 	}
@@ -132,13 +134,14 @@ public class UIDriver : MonoBehaviour {
 		if(activeMusicButton.IsActive()){
 			activeMusicButton.gameObject.SetActive (false);
 			mutedMusicButton.gameObject.SetActive (true);
-
+            musicManager.SetActive(false);
 			//TODO: Mute the music sound channel
 		}
 		else if(mutedMusicButton.IsActive()){
 			activeMusicButton.gameObject.SetActive (true);
 			mutedMusicButton.gameObject.SetActive (false);
-
+            musicManager.SetActive(true);
+            GameObject.Find("Stars").GetComponent<AudioSource>().Play();
 			//TODO: Unmute the music sound channel
 		}
 	}

@@ -24,7 +24,8 @@ public class GameDriver : MonoBehaviour {
 	public AudioSource scoreCount;
     public AudioSource menuMusic;
     public AudioSource gameMusic;
-
+    public GameObject musicManager;
+    public GameObject soundEffectManager;
 
 	private GameObject startPanel;
 	private GameObject gameOverPanel;
@@ -59,10 +60,19 @@ public class GameDriver : MonoBehaviour {
 		return(score);
 	}
 
+    private void OnEnable()
+    {
+        if (musicManager.activeInHierarchy)
+        {
+            menuMusic.Play();
+        }
+    }
 
-	void Start () {
+    void Start () {
 		Time.timeScale = 1.0f;//If the scene was reloaded, set timescale back to normal
-        menuMusic.Play();
+
+
+
 
 		multiplierNum = 1;
 		score = 0;
@@ -219,8 +229,11 @@ public class GameDriver : MonoBehaviour {
 		gameObject.GetComponent<AsteroidSpawner> ().maxThrust = 20;//Reset base asteroid speed
 
         //Game is starting
-        menuMusic.Stop();
-        gameMusic.Play();
+        if (musicManager.activeInHierarchy)
+        {
+                menuMusic.Stop();
+                gameMusic.Play();
+        }
 		isGameOver = false;
 		StartCoroutine (AsteroidTimer(3.0f));
 	}
@@ -284,8 +297,11 @@ public class GameDriver : MonoBehaviour {
 			scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 
 			multiplier = true;
-			if (!scoreCount.isPlaying)
-				scoreCount.Play ();
+            if (soundEffectManager.activeInHierarchy)
+            {
+                if (!scoreCount.isPlaying)
+                    scoreCount.Play();
+            }
 			yield return new WaitForFixedUpdate();
 			
 		}

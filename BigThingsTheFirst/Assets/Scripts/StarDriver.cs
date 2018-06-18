@@ -15,7 +15,8 @@ public class StarDriver : MonoBehaviour {
 	private Vector3 startV3;
 	private Vector3 direction;
 	public static int bankShot;
-
+    public AudioSource starSwipeSound;
+    public GameObject soundEffectManager;
 
 	// Use this for initialization
 	void Start () {
@@ -63,8 +64,15 @@ public class StarDriver : MonoBehaviour {
 			flickTimer = .02f;
 		if (dist > 10)
 			dist = 10;
-		gameObject.GetComponent<Rigidbody> ().AddForce ((-direction * flickForce /(flickTimer*80))* dist,ForceMode.Impulse); 
-		//gameObject.GetComponent<Rigidbody> ().velocity.magnitude
+		gameObject.GetComponent<Rigidbody> ().AddForce ((-direction * flickForce /(flickTimer*80))* dist,ForceMode.Impulse);
+        if (soundEffectManager.activeInHierarchy)
+        {
+            float vol = (flickForce / (flickTimer * 80)*dist)/75;
+            starSwipeSound.volume = vol;
+            starSwipeSound.Play();
+
+        }
+        //gameObject.GetComponent<Rigidbody> ().velocity.magnitude
 		flickBool = false;
 		flickTimer = 0;
 		startMove = false;
