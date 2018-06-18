@@ -168,7 +168,7 @@ public class GameDriver : MonoBehaviour {
 			gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
 			//Roll for a chance to spawn a second asteroid at the same time
 			//Between 0 and 11, max exclusive
-			if(Random.Range(0, 11) > 8){
+			if(Random.Range(0, 11) > 8 && gameObject.GetComponent<AsteroidSpawner>().maxThrust > 20){
 				gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
 			}
 			//Recurse to the next timer

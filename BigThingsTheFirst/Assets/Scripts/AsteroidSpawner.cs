@@ -14,7 +14,7 @@ using UnityEngine;
 public class AsteroidSpawner : MonoBehaviour {
 
 	[SerializeField]
-	public int maxThrust = 20;//The ceiling amount of speed to apply to a newly spawned asteroid
+	public int maxThrust = 6;//The ceiling amount of speed to apply to a newly spawned asteroid
 	public List<GameObject> asteroids = new List<GameObject>();//Data container for asteroid gameobjects
 
 	private List<GameObject> activeAsteroids;
