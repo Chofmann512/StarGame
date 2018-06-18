@@ -20,12 +20,13 @@ public class GameDriver : MonoBehaviour {
 	public List<GameObject> activeAsteroids = new List<GameObject>();
 	public List<GameObject> asteroids;
 	public GameObject poolingPosition;
-	public int multiplierNum;
+	public static int multiplierNum;
 	public AudioSource scoreCount;
     public AudioSource menuMusic;
     public AudioSource gameMusic;
     public GameObject musicManager;
     public GameObject soundEffectManager;
+    public UIDriver uiDriver;
 
 	private GameObject startPanel;
 	private GameObject gameOverPanel;
@@ -121,7 +122,8 @@ public class GameDriver : MonoBehaviour {
 			} else {
 				if (multiplierNum < 4) {
 					multiplierNum++;
-                    //callNum;
+                    
+                    uiDriver.UpdateMultiplierText(multiplierNum*StarDriver.bankShot);
 				}
 				StartCoroutine (lerpScore (100 * multiplierNum * StarDriver.bankShot));
 
@@ -306,14 +308,14 @@ public class GameDriver : MonoBehaviour {
                 if (!scoreCount.isPlaying)
                     scoreCount.Play();
             }
-			yield return new WaitForFixedUpdate();
+			yield return new WaitForSeconds(.03f);
 			
 		}
 
 
 		multiplier = false;
-        //callNumHere
-		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
+        uiDriver.UpdateMultiplierText(multiplierNum*StarDriver.bankShot);
+        scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 	}
 
 	//Checks if the achieved score is a new all time best
