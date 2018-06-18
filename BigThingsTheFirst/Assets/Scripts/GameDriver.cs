@@ -121,6 +121,7 @@ public class GameDriver : MonoBehaviour {
 			} else {
 				if (multiplierNum < 4) {
 					multiplierNum++;
+                    //callNum;
 				}
 				StartCoroutine (lerpScore (100 * multiplierNum * StarDriver.bankShot));
 
@@ -289,6 +290,7 @@ public class GameDriver : MonoBehaviour {
 			if ((countingUp + 1 * multiplierNum * bankShot) > x){
 				score += x - countingUp;
 				countingUp += 1 * multiplierNum * bankShot;
+
 			}
 			else {
 				score += 1* multiplierNum * bankShot;
@@ -308,6 +310,7 @@ public class GameDriver : MonoBehaviour {
 
 
 		multiplier = false;
+        //callNumHere
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 	}
 

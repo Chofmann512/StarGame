@@ -53,7 +53,7 @@ public class StarDriver : MonoBehaviour {
 			forceAdd ();
 		}
 		if (flickBool)
-			flickTimer += Time.fixedDeltaTime;
+			flickTimer += Time.deltaTime;
 	}
 	void forceAdd(){
 
@@ -64,10 +64,11 @@ public class StarDriver : MonoBehaviour {
 			flickTimer = .02f;
 		if (dist > 10)
 			dist = 10;
-		gameObject.GetComponent<Rigidbody> ().AddForce ((-direction * flickForce /(flickTimer*80))* dist,ForceMode.Impulse);
+		gameObject.GetComponent<Rigidbody> ().AddForce ((-direction * flickForce /(flickTimer*80))* dist*Time.deltaTime,ForceMode.Impulse);
+        Debug.Log((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
         if (soundEffectManager.activeInHierarchy)
         {
-            float vol = (flickForce / (flickTimer * 80)*dist)/75;
+            float vol = (flickForce / (flickTimer * 80)*dist)/1100;
             starSwipeSound.volume = vol;
             starSwipeSound.Play();
 
@@ -94,11 +95,12 @@ public class StarDriver : MonoBehaviour {
 		bankShot = 2;
 		CancelInvoke ("cancelBankShot");
 		Invoke ("cancelBankShot", 1f);
+        //callNum
 	}
 	public void cancelBankShot(){
 		
 		bankShot = 1;
-
+        //callNum
 	}
 
 }
