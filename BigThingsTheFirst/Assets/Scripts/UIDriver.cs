@@ -37,9 +37,34 @@ public class UIDriver : MonoBehaviour {
 	}
 
 	public void Start(){
-
-		//If this is the very first time playing, show instructions
-		if(PlayerPrefs.GetInt("Tutorial") != 1){
+        if (PlayerPrefs.GetInt("SoundFX") == 0)
+        {
+            activeSoundFXButton.gameObject.SetActive(true);
+            mutedSoundFXButton.gameObject.SetActive(false);
+            soundEffectManager.SetActive(true);
+        }
+        if(PlayerPrefs.GetInt("SoundFX")== 1)
+        {
+            activeSoundFXButton.gameObject.SetActive(false);
+            mutedSoundFXButton.gameObject.SetActive(true);
+            soundEffectManager.SetActive(false);
+        }
+        if (PlayerPrefs.GetInt("Music") == 0)
+        {
+            activeMusicButton.gameObject.SetActive(true);
+            mutedMusicButton.gameObject.SetActive(false);
+            musicManager.SetActive(true);
+            if(GameObject.Find("StartPanel").activeInHierarchy)
+            GameObject.Find("Stars").GetComponent<AudioSource>().Play();
+        }
+        if (PlayerPrefs.GetInt("Music") == 1)
+        {
+            activeMusicButton.gameObject.SetActive(false);
+            mutedMusicButton.gameObject.SetActive(true);
+            musicManager.SetActive(false);
+        }
+        //If this is the very first time playing, show instructions
+        if (PlayerPrefs.GetInt("Tutorial") != 1){
 			//Pop-up instructions
 			ToggleInstructionsPanel();
 			curUI = UI.Instructions;
@@ -131,14 +156,16 @@ public class UIDriver : MonoBehaviour {
 			activeSoundFXButton.gameObject.SetActive (false);
 			mutedSoundFXButton.gameObject.SetActive (true);
             soundEffectManager.SetActive(false);
-			//TODO: Mute the SoundFX sound channel
-		}
+            PlayerPrefs.SetInt("SoundFX", 1);
+            //TODO: Mute the SoundFX sound channel
+        }
 		else if(mutedSoundFXButton.IsActive()){
 			activeSoundFXButton.gameObject.SetActive (true);
 			mutedSoundFXButton.gameObject.SetActive (false);
             soundEffectManager.SetActive(true);
-			//TODO: Unmute the SoundFX sound channel
-		}
+            PlayerPrefs.SetInt("SoundFX", 0);
+            //TODO: Unmute the SoundFX sound channel
+        }
 	}
 
 	public void ToggleMusic(){
@@ -146,13 +173,15 @@ public class UIDriver : MonoBehaviour {
 			activeMusicButton.gameObject.SetActive (false);
 			mutedMusicButton.gameObject.SetActive (true);
             musicManager.SetActive(false);
-			//TODO: Mute the music sound channel
-		}
+            PlayerPrefs.SetInt("Music", 1);
+            //TODO: Mute the music sound channel
+        }
 		else if(mutedMusicButton.IsActive()){
 			activeMusicButton.gameObject.SetActive (true);
 			mutedMusicButton.gameObject.SetActive (false);
             musicManager.SetActive(true);
             GameObject.Find("Stars").GetComponent<AudioSource>().Play();
+            PlayerPrefs.SetInt("Music", 0);
 			//TODO: Unmute the music sound channel
 		}
 	}
