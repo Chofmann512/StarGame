@@ -96,4 +96,13 @@ public class AdDriver : MonoBehaviour {
 		interstitial.Destroy ();
 		return;
 	}
+
+    //Used when the game is starting to clean up the play area
+    public void RemoveBanner() {
+    #if UNITY_EDITOR
+        return;
+    #else
+        this.bannerView.Destroy();//Destroy the current banner ad
+    #endif
+    }
 }

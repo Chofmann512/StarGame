@@ -184,14 +184,16 @@ public class GameDriver : MonoBehaviour {
 
 	public void StartGame(){
 
-		//Pre-processor directive to not call ads in the unity editor
-		#if UNITY_EDITOR
-		#else
+        //Pre-processor directive to not call ads in the unity editor
+#if UNITY_EDITOR
+#else
 			//AD//Start loading a new interstitial ad to play when the game ends
 			AdDriver.Instance.RequestInterstitialAd();
 			//Increment ad interval
 			AdDriver.Instance.loadCount++;
-		#endif
+#endif
+
+        GameObject.Find("AdDriver").GetComponent<AdDriver>().RemoveBanner();
 
 		//Change to true that a game has been played
 		Replay.isReplay = 1;
@@ -227,7 +229,7 @@ public class GameDriver : MonoBehaviour {
 		score = 0;
 		multiplierNum = 1;
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
-		gameObject.GetComponent<AsteroidSpawner> ().maxThrust = 20;//Reset base asteroid speed
+		gameObject.GetComponent<AsteroidSpawner> ().maxThrust = 6;//Reset base asteroid speed
 
         //Game is starting
         if (musicManager.activeInHierarchy)
