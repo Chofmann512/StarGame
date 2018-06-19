@@ -30,6 +30,7 @@ public class GameDriver : MonoBehaviour {
     public GameObject soundEffectManager;
     public UIDriver uiDriver;
     public int remainingScore;
+    public static bool lerping;
 
 	private GameObject startPanel;
 	private GameObject gameOverPanel;
@@ -132,7 +133,8 @@ public class GameDriver : MonoBehaviour {
             asteroidCapture.Play();
 			if (!multiplier) {
                 remainingScore += 100* multiplierNum * StarDriver.bankShot;
-				multiplierNum = 1;
+                uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
+                multiplierNum = 1;
                 multiplier = true;
 			} else {
 				if (multiplierNum < 4) {
@@ -321,10 +323,17 @@ public class GameDriver : MonoBehaviour {
         {
             multiplier = false;
             multiplierNum = 1;
+            lerping = false;
+            
+            if(StarDriver.bankShotted == false)
+            {
+                StarDriver.bankShot = 1;
+                uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
+            }
         }
         if (remainingScore > 0)
         {
-
+            lerping = true;
             int bankShot = 1;
             if (StarDriver.bankShot == 2)
                 bankShot = 2;
@@ -348,10 +357,10 @@ public class GameDriver : MonoBehaviour {
                     scoreCount.Play();
             }
             scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
-            uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
+            
         }
         yield return new WaitForSeconds(.02f);
-        
+        Debug.Log("bankshotted" + StarDriver.bankShotted);
         StartCoroutine(lerpScore());
 	}
 
