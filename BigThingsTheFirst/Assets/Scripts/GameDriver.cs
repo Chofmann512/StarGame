@@ -257,7 +257,9 @@ public class GameDriver : MonoBehaviour {
 
 	void GameOver(){
         //End game
-        gameMusic.Stop();
+        musicManager.SetActive(false);
+        soundEffectManager.SetActive(false);
+
 		isGameOver = true;
 		SubmitNewScore (score);
 		Time.timeScale = 0f;
@@ -295,7 +297,7 @@ public class GameDriver : MonoBehaviour {
 	}
 
 	public IEnumerator lerpScore(){
-        Debug.Log(multiplierNum);
+       
         if(remainingScore == 0)
         {
             multiplier = false;
