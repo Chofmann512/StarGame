@@ -37,7 +37,7 @@ public class StarDriver : MonoBehaviour {
 				gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				CancelInvoke ("cancelBankShot");
 				bankShot = 1;
-                uiDriver.UpdateMultiplierText(bankShot * GameDriver.multiplierNum);
+                
 
                 startMove = true;
 				flickBool = true;
@@ -98,13 +98,14 @@ public class StarDriver : MonoBehaviour {
 		bankShot = 2;
 		CancelInvoke ("cancelBankShot");
 		Invoke ("cancelBankShot", 1.4f);
-        uiDriver.UpdateMultiplierText(bankShot * GameDriver.multiplierNum);
+        
         //callNum
 	}
 	public void cancelBankShot(){
 		
 		bankShot = 1;
-        uiDriver.UpdateMultiplierText(bankShot * GameDriver.multiplierNum);
+        
+        
         //callNum
     }
 

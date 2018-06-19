@@ -25,6 +25,7 @@ public class GameDriver : MonoBehaviour {
     public AudioSource menuMusic;
     public AudioSource gameMusic;
     public AudioSource asteroidCapture;
+    public AudioSource asteroidSpawn;
     public GameObject musicManager;
     public GameObject soundEffectManager;
     public UIDriver uiDriver;
@@ -181,11 +182,13 @@ public class GameDriver : MonoBehaviour {
 		if (!isGameOver) {
 			//Game is still going spawn an asteroid and calculate, time to spawn next asteroid
 			gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
+            asteroidSpawn.Play();
 			//Roll for a chance to spawn a second asteroid at the same time
 			//Between 0 and 11, max exclusive
 			if(Random.Range(0, 11) > 8 && gameObject.GetComponent<AsteroidSpawner>().maxThrust > 20){
 				gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
-			}
+                asteroidSpawn.Play();
+            }
 			//Recurse to the next timer
 			StartCoroutine(AsteroidTimer(Random.Range (minSpawnTimerBound, maxSpawnTimerBound)));
 		} 
@@ -332,9 +335,10 @@ public class GameDriver : MonoBehaviour {
                     scoreCount.Play();
             }
             scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
+            uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
         }
         yield return new WaitForSeconds(.02f);
-        uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
+        
         StartCoroutine(lerpScore());
 	}
 
