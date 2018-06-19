@@ -27,6 +27,7 @@ public class GameDriver : MonoBehaviour {
     public GameObject musicManager;
     public GameObject soundEffectManager;
     public UIDriver uiDriver;
+    public int remainingScore;
 
 	private GameObject startPanel;
 	private GameObject gameOverPanel;
@@ -117,15 +118,16 @@ public class GameDriver : MonoBehaviour {
 			//Increment score
 			//LerpScore(100);//TODO: add checking for multiple asteroid catches
 			if (!multiplier) {
-				StartCoroutine (lerpScore (100* StarDriver.bankShot));
+                remainingScore += 100* multiplierNum * StarDriver.bankShot;
 				multiplierNum = 1;
+                multiplier = true;
 			} else {
 				if (multiplierNum < 4) {
 					multiplierNum++;
                     
                     uiDriver.UpdateMultiplierText(multiplierNum*StarDriver.bankShot);
 				}
-				StartCoroutine (lerpScore (100 * multiplierNum * StarDriver.bankShot));
+                remainingScore += 100* multiplierNum * StarDriver.bankShot;
 
 			}
 			//After the particles have flowed in reset the asteroid
@@ -241,7 +243,8 @@ public class GameDriver : MonoBehaviour {
         }
 		isGameOver = false;
 		StartCoroutine (AsteroidTimer(3.0f));
-	}
+        StartCoroutine(lerpScore());
+    }
 
 	void GameOver(){
         //End game
@@ -282,44 +285,47 @@ public class GameDriver : MonoBehaviour {
 		gpgsDriver.OpenSave(true);
 	}
 
-	public IEnumerator lerpScore(int x){
-		int countingUp = 0;
-		int bankShot = 1;
-		if (StarDriver.bankShot == 2)
-			bankShot = 2;
-		else
-			bankShot = 1;
-			
-		while (countingUp < x) {
-			if ((countingUp + 1 * multiplierNum * bankShot) > x){
-				score += x - countingUp;
-				countingUp += 1 * multiplierNum * bankShot;
+	public IEnumerator lerpScore(){
+        Debug.Log(multiplierNum);
+        if(remainingScore == 0)
+        {
+            multiplier = false;
+            multiplierNum = 1;
+        }
+        if (remainingScore > 0)
+        {
 
-			}
-			else {
-				score += 1* multiplierNum * bankShot;
-				countingUp += 1 * multiplierNum * bankShot;	
-			}
-			scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
-
-			multiplier = true;
+            int bankShot = 1;
+            if (StarDriver.bankShot == 2)
+                bankShot = 2;
+            else
+            {
+                bankShot = 1;
+            }
+            if ((int)(remainingScore / 75) == 0)
+            {
+                score += 1;
+                remainingScore -= 1;
+            }
+            else { 
+            score += (int)(remainingScore / 75);
+            remainingScore -= (int)(remainingScore / 75);
+             }
+            scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
             if (soundEffectManager.activeInHierarchy)
             {
                 if (!scoreCount.isPlaying)
                     scoreCount.Play();
             }
-			yield return new WaitForSeconds(.03f);
-			
-		}
-
-
-		multiplier = false;
-        uiDriver.UpdateMultiplierText(multiplierNum*StarDriver.bankShot);
-        scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
+            scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
+        }
+        yield return new WaitForSeconds(.02f);
+        uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
+        StartCoroutine(lerpScore());
 	}
 
-	//Checks if the achieved score is a new all time best
-	public void SubmitNewScore(int newScore){
+    //Checks if the achieved score is a new all time best
+    public void SubmitNewScore(int newScore){
 		if(newScore > highestScore){
 			highestScore = newScore;
 			SaveHighestScore();
