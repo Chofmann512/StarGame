@@ -240,4 +240,8 @@ public class UIDriver : MonoBehaviour {
 			break;
 		}
 	}
+
+    public void BuyRemoveAds(){
+        IAPManager.Instance.BuyRemoveAds();
+    }
 }
