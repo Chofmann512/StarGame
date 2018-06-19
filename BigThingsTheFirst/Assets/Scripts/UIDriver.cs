@@ -21,7 +21,10 @@ public class UIDriver : MonoBehaviour {
 	public Button mutedSoundFXButton;
 	public Button googleSignInButton;
 	public Button googleSignOutButton;
+    public Button pauseButton;
+    public Button unpauseButton;
     public Text scoreMultiplierText;
+    public AudioSource buttonSound;
 
 	[SerializeField]
 	private string facebookURL;
@@ -76,7 +79,9 @@ public class UIDriver : MonoBehaviour {
 	}
 
 	public void ReplayGame(){
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        buttonSound.Play();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
 	}
 
 	public void LoadFacebookPage(){
@@ -114,7 +119,9 @@ public class UIDriver : MonoBehaviour {
 		gameOverPanel.SetActive (false);
 
 		Replay.isReplay = 0;
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        buttonSound.Play();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
 	}
 
 	public void ToggleSignInButtons(){
@@ -133,7 +140,8 @@ public class UIDriver : MonoBehaviour {
 	}
 
 	public void ToggleSettingsPanel(){
-		settingsPanel.SetActive (!settingsPanel.activeSelf);
+        buttonSound.Play();
+        settingsPanel.SetActive (!settingsPanel.activeSelf);
 		if (settingsPanel.activeSelf) {
 			curUI = UI.Settings;
 		} else {
@@ -142,7 +150,8 @@ public class UIDriver : MonoBehaviour {
 	}
 
 	public void ToggleInstructionsPanel(){
-		instructionsPanel.SetActive (!instructionsPanel.activeSelf);
+        buttonSound.Play();
+        instructionsPanel.SetActive (!instructionsPanel.activeSelf);
 		if (instructionsPanel.activeSelf) {
 			curUI = UI.Instructions;
 		} else {
@@ -160,7 +169,8 @@ public class UIDriver : MonoBehaviour {
             //TODO: Mute the SoundFX sound channel
         }
 		else if(mutedSoundFXButton.IsActive()){
-			activeSoundFXButton.gameObject.SetActive (true);
+            buttonSound.Play();
+            activeSoundFXButton.gameObject.SetActive (true);
 			mutedSoundFXButton.gameObject.SetActive (false);
             soundEffectManager.SetActive(true);
             PlayerPrefs.SetInt("SoundFX", 0);
@@ -177,7 +187,8 @@ public class UIDriver : MonoBehaviour {
             //TODO: Mute the music sound channel
         }
 		else if(mutedMusicButton.IsActive()){
-			activeMusicButton.gameObject.SetActive (true);
+            buttonSound.Play();
+            activeMusicButton.gameObject.SetActive (true);
 			mutedMusicButton.gameObject.SetActive (false);
             musicManager.SetActive(true);
             GameObject.Find("Stars").GetComponent<AudioSource>().Play();
@@ -185,6 +196,26 @@ public class UIDriver : MonoBehaviour {
 			//TODO: Unmute the music sound channel
 		}
 	}
+
+    public void TogglePause() {
+        buttonSound.Play();
+        if (pauseButton.IsActive()) {
+            pauseButton.gameObject.SetActive(false);
+            unpauseButton.gameObject.SetActive(true);
+            Time.timeScale = 0.0f;
+
+            gameObject.GetComponent<GameDriver>().scoreCount.Pause();
+            gameObject.GetComponent<GameDriver>().gameMusic.Pause();
+        }
+        else if (unpauseButton.IsActive()) {
+            unpauseButton.gameObject.SetActive(false);
+            pauseButton.gameObject.SetActive(true);
+            Time.timeScale = 1.0f;
+
+            gameObject.GetComponent<GameDriver>().scoreCount.UnPause();
+            gameObject.GetComponent<GameDriver>().gameMusic.UnPause();
+        }
+    }
 
 	public void HandleEscapeInput(){
 		switch(curUI)
