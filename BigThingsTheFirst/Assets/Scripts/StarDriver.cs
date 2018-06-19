@@ -68,7 +68,7 @@ public class StarDriver : MonoBehaviour {
 		if (dist > 10)
 			dist = 10;
 		gameObject.GetComponent<Rigidbody> ().AddForce ((-direction * flickForce /(flickTimer*80))* dist*Time.deltaTime,ForceMode.Impulse);
-       // Debug.Log((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
+       //  Debug.Log((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
         if (soundEffectManager.activeInHierarchy)
         {
             float vol = (flickForce / (flickTimer * 80)*dist)/1100;
