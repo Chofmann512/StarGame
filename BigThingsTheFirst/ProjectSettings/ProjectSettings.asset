@@ -714,9 +714,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: fe0d3744-3ac8-4805-b56a-37b8989cc131
-  projectName: BigThingsTheFirst
-  organizationId: collect
+  cloudProjectId: 6e40ea5c-498c-477e-b93e-059ec3d01e9b
+  projectName: Star Swipe
+  organizationId: gridline-games
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
