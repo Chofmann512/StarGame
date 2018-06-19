@@ -144,7 +144,7 @@ public class GPGSDriver : MonoBehaviour {
 				});
 				break;
 
-			case "Tripel!" :
+			case "Triple!" :
 				PlayGamesPlatform.Instance.ReportProgress (
 					GPGSIds.achievement_triple,
 					100.0f, (bool success) => {
