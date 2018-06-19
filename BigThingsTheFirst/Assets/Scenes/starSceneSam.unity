@@ -43372,7 +43372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxJitter: 0.04
   timer: 0
-  timeAmount: 5.4
+  timeAmount: 5
   finalTime: 7
   curColor: 0
   tarColor: 0

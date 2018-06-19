@@ -37,7 +37,9 @@ public class StarDriver : MonoBehaviour {
 				gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				CancelInvoke ("cancelBankShot");
 				bankShot = 1;
-				startMove = true;
+                uiDriver.UpdateMultiplierText(bankShot * GameDriver.multiplierNum);
+
+                startMove = true;
 				flickBool = true;
 				startFlick.position = v3;
 				startV3 = startFlick.position;
@@ -66,7 +68,7 @@ public class StarDriver : MonoBehaviour {
 		if (dist > 10)
 			dist = 10;
 		gameObject.GetComponent<Rigidbody> ().AddForce ((-direction * flickForce /(flickTimer*80))* dist*Time.deltaTime,ForceMode.Impulse);
-        Debug.Log((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
+       // Debug.Log((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
         if (soundEffectManager.activeInHierarchy)
         {
             float vol = (flickForce / (flickTimer * 80)*dist)/1100;
