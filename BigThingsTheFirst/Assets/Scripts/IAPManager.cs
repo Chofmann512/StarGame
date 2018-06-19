@@ -177,7 +177,6 @@ public class IAPManager : MonoBehaviour, IStoreListener
         // A non-consumable product has been purchased by this user.
         if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_REMOVE_ADS, StringComparison.Ordinal))
         {
-            Debug.LogError("Needs Implemented.");
             Debug.Log("Ads Removed!");
 
             //Save a player pref isAdsRemoved
