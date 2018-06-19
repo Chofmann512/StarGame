@@ -360,7 +360,7 @@ public class GameDriver : MonoBehaviour {
             
         }
         yield return new WaitForSeconds(.02f);
-        Debug.Log("bankshot" + StarDriver.bankShot);
+        Debug.Log("bankshotted" + StarDriver.bankShotted);
         StartCoroutine(lerpScore());
 	}
 

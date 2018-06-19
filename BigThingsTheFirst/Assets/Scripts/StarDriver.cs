@@ -38,9 +38,11 @@ public class StarDriver : MonoBehaviour {
 			if (Vector3.Distance(v3, startFlick.position) < maxDistanceGrab) {
 				gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				CancelInvoke ("cancelBankShot");
-                if(!GameDriver.lerping)
-				bankShot = 1;
-                
+                if (!GameDriver.lerping)
+                {
+                    bankShot = 1;
+                    bankShotted = false;
+                }
 
                 startMove = true;
 				flickBool = true;
