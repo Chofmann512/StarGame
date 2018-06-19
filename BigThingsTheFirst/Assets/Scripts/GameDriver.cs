@@ -24,12 +24,9 @@ public class GameDriver : MonoBehaviour {
 	public AudioSource scoreCount;
     public AudioSource menuMusic;
     public AudioSource gameMusic;
-<<<<<<< HEAD
     public AudioSource asteroidCapture;
     public AudioSource asteroidSpawn;
-=======
     public AudioSource AsteroidCapture;
->>>>>>> parent of eee83fb... Fixes to Pause/Unpause
     public GameObject musicManager;
     public GameObject soundEffectManager;
     public UIDriver uiDriver;
