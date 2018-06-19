@@ -124,6 +124,14 @@ public class GameDriver : MonoBehaviour {
 			} else {
 				if (multiplierNum < 4) {
 					multiplierNum++;
+                    if (multiplierNum == 2) {
+                        //Report Double!
+                        gpgsDriver.ReportAchievement("Double!");
+                    }
+                    else if (multiplierNum == 3) {
+                        //Report Triple!
+                        gpgsDriver.ReportAchievement("Triple!");
+                    }
                     
                     uiDriver.UpdateMultiplierText(multiplierNum*StarDriver.bankShot);
 				}
