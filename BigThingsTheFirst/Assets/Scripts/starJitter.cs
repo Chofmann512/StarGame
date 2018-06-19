@@ -36,7 +36,6 @@ public class starJitter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        Debug.Log("running");
 		timer += Time.deltaTime;
 		if (timer > timeAmount	) {
 			transform.localPosition = new Vector3 (Random.Range (-MaxJitter, MaxJitter)*(timer-timeAmount), 0, Random.Range (-MaxJitter, MaxJitter)*(timer-timeAmount));

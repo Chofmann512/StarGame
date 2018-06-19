@@ -26,10 +26,6 @@ public class GameDriver : MonoBehaviour {
     public AudioSource gameMusic;
     public AudioSource asteroidCapture;
     public AudioSource asteroidSpawn;
-<<<<<<< HEAD
-    public AudioSource AsteroidCapture;
-=======
->>>>>>> parent of 78fbab8... Revert "Fixes to Pause/Unpause"
     public GameObject musicManager;
     public GameObject soundEffectManager;
     public UIDriver uiDriver;
