@@ -40,11 +40,23 @@ public class GameDriver : MonoBehaviour {
 	private bool isGameOver = true;//Flag used to tell whether or not the game is playing
 	private bool multiplier;
 	private int asteroidsCaught;
+    private string isAdsRemoved = "false";
 	private int totalCurrency;//Used to track the total amount of in-game currency
 	private int highestScore;//Used to load locally, the highest score achieved
-	//Used to track and report achievement progress
-	//public float TimeToLerp;
+                             //Used to track and report achievement progress
+                             //public float TimeToLerp;
 
+    private void Awake()
+    {
+        isAdsRemoved = PlayerPrefs.GetString("AdsRemoved");
+    }
+
+    public void SetIsAdsRemoved(string x) {
+        isAdsRemoved = x;
+    }
+    public string GetIsAdsRemoved() {
+        return(isAdsRemoved);
+    }
 	public void SetTotalCurrency(int x){
 		totalCurrency = x;
 	}
@@ -75,9 +87,6 @@ public class GameDriver : MonoBehaviour {
 
     void Start () {
 		Time.timeScale = 1.0f;//If the scene was reloaded, set timescale back to normal
-
-
-
 
 		multiplierNum = 1;
 		score = 0;
@@ -207,10 +216,12 @@ public class GameDriver : MonoBehaviour {
         //Pre-processor directive to not call ads in the unity editor
 #if UNITY_EDITOR
 #else
+        if(isAdsRemoved != "true"){
 			//AD//Start loading a new interstitial ad to play when the game ends
 			AdDriver.Instance.RequestInterstitialAd();
 			//Increment ad interval
 			AdDriver.Instance.loadCount++;
+        }
 #endif
 
         GameObject.Find("AdDriver").GetComponent<AdDriver>().RemoveBanner();
@@ -280,17 +291,19 @@ public class GameDriver : MonoBehaviour {
 		GameObject.Find("/Canvas/GameOverPanel").GetComponentInChildren<Animator>().Play("Text_Breathe");
 
 
-		//Pre-processor directive to not call ads in the unity editor
-		#if UNITY_EDITOR
-		#else
-		//Attempt to show interstitial
-		if(AdDriver.Instance.loadCount % AdDriver.Instance.interstitialInterval == 0){
-		AdDriver.Instance.loadCount = 0;//Reset the loadcount
-		AdDriver.Instance.ShowInterstitial();
-		}
-		#endif
+        //Pre-processor directive to not call ads in the unity editor
+    #if UNITY_EDITOR
+    #else
+         if(isAdsRemoved != "true"){
+		    //Attempt to show interstitial
+		    if(AdDriver.Instance.loadCount % AdDriver.Instance.interstitialInterval == 0){
+		    AdDriver.Instance.loadCount = 0;//Reset the loadcount
+		    AdDriver.Instance.ShowInterstitial();
+		    }
+        }
+    #endif
 
-		StopAllCoroutines ();
+        StopAllCoroutines();
 		//Submit the score to the Google Play leaderboards
 		gpgsDriver.ReportScore(score);
 
@@ -368,7 +381,6 @@ public class GameDriver : MonoBehaviour {
 	//Sets the locally saved high score to the value held in highestScore
 	private void SaveHighestScore(){
 		PlayerPrefs.SetInt ("Hiscore", highestScore);
-		//TODO:
-		//GetComponent<GPGSDriver>(). save game data
+        GetComponent<GPGSDriver>().OpenSave(true);
 	}
 }

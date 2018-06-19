@@ -236,12 +236,12 @@ public class GPGSDriver : MonoBehaviour {
 	private bool isSaving = false;
 
 	//Packages the string to save as META data to the Google Cloud
-	//Format is highscore|totalCurrency, for example 21367|22
+	//Format is highscore|totalCurrency, for example 21367|1
 	private string GetSaveString(){
 		string s = "";
 		s += PlayerPrefs.GetInt ("Hiscore").ToString ();
 		s += "|";
-		s += GetComponent<GameDriver> ().GetTotalCurrency().ToString ();
+        s += GetComponent<GameDriver>().GetIsAdsRemoved();
 
 		return(s);
 	}
@@ -250,9 +250,11 @@ public class GPGSDriver : MonoBehaviour {
 	private void LoadSaveString(string save){
 		string[] data = save.Split ('|');
 		//[0] is highscore
-		//[1] is currency
+		//[1] is isAdsRemoved
 		PlayerPrefs.SetInt ("Hiscore", int.Parse (data [0]));
 		GetComponent<GameDriver> ().SetTotalCurrency(int.Parse (data[1]));
+        GetComponent<GameDriver>().SetIsAdsRemoved(data[1]);
+        //TODO: possibly also set player prefs for ads here like above ^^
 	}
 
 	public void OpenSave(bool saving){
