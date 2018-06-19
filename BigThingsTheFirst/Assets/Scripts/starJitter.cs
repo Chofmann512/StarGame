@@ -8,6 +8,7 @@ public class starJitter : MonoBehaviour {
 	public float timeAmount;
 	public float finalTime;
 
+    public AudioSource starExplosion;
 	public int curColor;
 	public int tarColor;
 	public StarDriver starDriver;
@@ -34,11 +35,16 @@ public class starJitter : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
+        Debug.Log("running");
 		timer += Time.deltaTime;
 		if (timer > timeAmount	) {
 			transform.localPosition = new Vector3 (Random.Range (-MaxJitter, MaxJitter)*(timer-timeAmount), 0, Random.Range (-MaxJitter, MaxJitter)*(timer-timeAmount));
-			if (finalTime - timer > .7f)
+            if (!starExplosion.isPlaying)
+            {
+                starExplosion.Play();
+            }
+			if (finalTime - timer > 1.4f)
 				BuildUps[tarColor].Play ();
 			if (timer > finalTime) {
 				timer = 0;

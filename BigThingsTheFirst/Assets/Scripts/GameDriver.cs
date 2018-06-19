@@ -24,6 +24,7 @@ public class GameDriver : MonoBehaviour {
 	public AudioSource scoreCount;
     public AudioSource menuMusic;
     public AudioSource gameMusic;
+    public AudioSource AsteroidCapture;
     public GameObject musicManager;
     public GameObject soundEffectManager;
     public UIDriver uiDriver;
@@ -115,8 +116,10 @@ public class GameDriver : MonoBehaviour {
 			asteroid.transform.position = star.transform.position;
 			asteroid.transform.parent = star.transform;
 			asteroidsCaught++;
-			//Increment score
-			//LerpScore(100);//TODO: add checking for multiple asteroid catches
+            //Increment score
+            //LerpScore(100);//TODO: add checking for multiple asteroid catches
+            if(soundEffectManager.activeInHierarchy)
+            AsteroidCapture.Play();
 			if (!multiplier) {
                 remainingScore += 100* multiplierNum * StarDriver.bankShot;
 				multiplierNum = 1;
