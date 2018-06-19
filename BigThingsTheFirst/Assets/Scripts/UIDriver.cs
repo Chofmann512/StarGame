@@ -57,10 +57,8 @@ public class UIDriver : MonoBehaviour {
             activeMusicButton.gameObject.SetActive(true);
             mutedMusicButton.gameObject.SetActive(false);
             musicManager.SetActive(true);
-            if (GameObject.Find("StartPanel")!=null){
-                if (GameObject.Find("StartPanel").activeInHierarchy)
-                    GameObject.Find("Stars").GetComponent<AudioSource>().Play();
-            }
+            if(GameObject.Find("StartPanel").activeInHierarchy)
+            GameObject.Find("Stars").GetComponent<AudioSource>().Play();
         }
         if (PlayerPrefs.GetInt("Music") == 1)
         {

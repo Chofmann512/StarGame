@@ -19,8 +19,6 @@ public class StarDriver : MonoBehaviour {
     public GameObject soundEffectManager;
     public UIDriver uiDriver;
 
-    public static bool bankShotted;
-
 	// Use this for initialization
 	void Start () {
 		flickBool = false;
@@ -38,11 +36,8 @@ public class StarDriver : MonoBehaviour {
 			if (Vector3.Distance(v3, startFlick.position) < maxDistanceGrab) {
 				gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				CancelInvoke ("cancelBankShot");
-                if (!GameDriver.lerping)
-                {
-                    bankShot = 1;
-                    bankShotted = false;
-                }
+				bankShot = 1;
+                
 
                 startMove = true;
 				flickBool = true;
@@ -101,23 +96,15 @@ public class StarDriver : MonoBehaviour {
 
 	public void BankShot(){
 		bankShot = 2;
-        bankShotted = true;
 		CancelInvoke ("cancelBankShot");
 		Invoke ("cancelBankShot", 1.4f);
         
         //callNum
 	}
 	public void cancelBankShot(){
-        if (GameDriver.lerping == false)
-        {
-            bankShot = 1;
-            uiDriver.UpdateMultiplierText(StarDriver.bankShot);
-        }
-        else
-        {
-            bankShot = 2;
-        }
-        bankShotted = false;
+		
+		bankShot = 1;
+        
         
         //callNum
     }
