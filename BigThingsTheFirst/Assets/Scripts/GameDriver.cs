@@ -11,7 +11,7 @@ public class GameDriver : MonoBehaviour {
 	[SerializeField]
 	private int score;
 	[SerializeField]
-	public GameObject starCharacter;
+	private GameObject starCharacter;
 	[SerializeField]
 	private float minSpawnTimerBound;
 	[SerializeField]
@@ -24,8 +24,12 @@ public class GameDriver : MonoBehaviour {
 	public AudioSource scoreCount;
     public AudioSource menuMusic;
     public AudioSource gameMusic;
+<<<<<<< HEAD
     public AudioSource asteroidCapture;
     public AudioSource asteroidSpawn;
+=======
+    public AudioSource AsteroidCapture;
+>>>>>>> parent of eee83fb... Fixes to Pause/Unpause
     public GameObject musicManager;
     public GameObject soundEffectManager;
     public UIDriver uiDriver;
@@ -120,7 +124,7 @@ public class GameDriver : MonoBehaviour {
             //Increment score
             //LerpScore(100);//TODO: add checking for multiple asteroid catches
             if(soundEffectManager.activeInHierarchy)
-            asteroidCapture.Play();
+            AsteroidCapture.Play();
 			if (!multiplier) {
                 remainingScore += 100* multiplierNum * StarDriver.bankShot;
 				multiplierNum = 1;
