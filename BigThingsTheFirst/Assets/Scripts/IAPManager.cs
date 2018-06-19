@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using UnityEngine.SceneManagement;
 
 // Deriving the Purchaser class from IStoreListener enables it to receive messages from Unity Purchasing.
 public class IAPManager : MonoBehaviour, IStoreListener
@@ -178,11 +179,12 @@ public class IAPManager : MonoBehaviour, IStoreListener
         {
             Debug.LogError("Needs Implemented.");
             Debug.Log("Ads Removed!");
-            //TODO: Implement global removal of interstitial/banner ads.
 
             //Save a player pref isAdsRemoved
+            PlayerPrefs.SetString("AdsRemoved", "true");
 
             //Reload Scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         // Or ... an unknown product has been purchased by this user. Fill in additional products here....
         else
