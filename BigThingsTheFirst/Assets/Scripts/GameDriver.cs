@@ -84,6 +84,15 @@ public class GameDriver : MonoBehaviour {
             menuMusic.Play();
         }
     }
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            remainingScore += 100 * multiplierNum * StarDriver.bankShot;
+            uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
+        }
+    }
 
     void Start () {
 		Time.timeScale = 1.0f;//If the scene was reloaded, set timescale back to normal
@@ -325,11 +334,9 @@ public class GameDriver : MonoBehaviour {
             multiplierNum = 1;
             lerping = false;
             
-            if(StarDriver.bankShotted == false)
-            {
-                StarDriver.bankShot = 1;
-                uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
-            }
+
+                uiDriver.UpdateMultiplierText(1);
+            
         }
         if (remainingScore > 0)
         {

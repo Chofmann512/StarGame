@@ -31,7 +31,11 @@ public class StarDriver : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if(!startMove)
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            BankShot();
+        }
+        if (!startMove)
 		startFlick.position = new Vector3 (transform.position.x, 3, transform.position.z);
 		if (Input.GetButtonDown ("Fire1")) {
 			Vector3 v3 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
@@ -72,8 +76,14 @@ public class StarDriver : MonoBehaviour {
 			flickTimer = .02f;
 		if (dist > 10)
 			dist = 10;
-		gameObject.GetComponent<Rigidbody> ().AddForce ((-direction * flickForce /(flickTimer*80))* dist*Time.deltaTime,ForceMode.Impulse);
-       //  Debug.Log((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
+        float forceShot = ((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
+        if (forceShot > 30)
+        {
+            forceShot = 30;
+        }
+            gameObject.GetComponent<Rigidbody>().AddForce(-direction * forceShot, ForceMode.Impulse);
+
+         Debug.Log(forceShot);
         if (soundEffectManager.activeInHierarchy)
         {
             float vol = (flickForce / (flickTimer * 80)*dist)/1100;
