@@ -20,6 +20,7 @@ public class GameDriver : MonoBehaviour {
 	public List<GameObject> activeAsteroids = new List<GameObject>();
 	public List<GameObject> asteroids;
 	public GameObject poolingPosition;
+    public GameObject videoAdUnit;
 	public static int multiplierNum;
 	public AudioSource scoreCount;
     public AudioSource menuMusic;
@@ -45,11 +46,6 @@ public class GameDriver : MonoBehaviour {
 	private int highestScore;//Used to load locally, the highest score achieved
                              //Used to track and report achievement progress
                              //public float TimeToLerp;
-
-    private void Awake()
-    {
-        isAdsRemoved = PlayerPrefs.GetString("AdsRemoved");
-    }
 
     public void SetIsAdsRemoved(string x) {
         isAdsRemoved = x;
@@ -84,18 +80,10 @@ public class GameDriver : MonoBehaviour {
             menuMusic.Play();
         }
     }
-    private void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            remainingScore += 100 * multiplierNum * StarDriver.bankShot;
-            uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
-        }
-    }
 
     void Start () {
-		Time.timeScale = 1.0f;//If the scene was reloaded, set timescale back to normal
+        isAdsRemoved = PlayerPrefs.GetString("AdsRemoved");
+        Time.timeScale = 1.0f;//If the scene was reloaded, set timescale back to normal
 
 		multiplierNum = 1;
 		score = 0;
@@ -218,27 +206,22 @@ public class GameDriver : MonoBehaviour {
 		}
 	
 	}
-		
-
+	
 	public void StartGame(){
-
         //Pre-processor directive to not call ads in the unity editor
-#if UNITY_EDITOR
-#else
-        if(isAdsRemoved != "true"){
-			//AD//Start loading a new interstitial ad to play when the game ends
-			AdDriver.Instance.RequestInterstitialAd();
-			//Increment ad interval
-			AdDriver.Instance.loadCount++;
-        }
-#endif
+        //TODO:Fix below
+        isAdsRemoved = "false";
+        #if UNITY_EDITOR
+        #else
+			    //Increment ad interval
+			    AdDriver.Instance.loadCount++;
+        #endif
 
-        GameObject.Find("AdDriver").GetComponent<AdDriver>().RemoveBanner();
+        //GameObject.Find("AdDriver").GetComponent<AdDriver>().RemoveBanner();
 
 		//Change to true that a game has been played
 		Replay.isReplay = 1;
 
-		Debug.Log ("Starting Game! :)");
 		//Report Achievement
 		gpgsDriver.ReportAchievement("OneSmallStep");
 		//Increment Achievement
@@ -308,20 +291,22 @@ public class GameDriver : MonoBehaviour {
 		scoreText.SetActive (false);
 		//gameOverPanel.SetActive (true);
 		GetComponent<UIDriver>().ToggleGameOverPanel();
+        if (AdDriver.Instance.IsVideoLoaded()) {
+            videoAdUnit.SetActive(true);
+        }
 		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Show ending score for the current round
 		bestScoreText.GetComponent<Text>().text = "Best Score : " + highestScore.ToString(); //Show highest score
 		GameObject.Find("/Canvas/GameOverPanel").GetComponentInChildren<Animator>().Play("Text_Breathe");
-
 
         //Pre-processor directive to not call ads in the unity editor
     #if UNITY_EDITOR
     #else
          if(isAdsRemoved != "true"){
 		    //Attempt to show interstitial
-		    if(AdDriver.Instance.loadCount % AdDriver.Instance.interstitialInterval == 0){
-		    AdDriver.Instance.loadCount = 0;//Reset the loadcount
-		    AdDriver.Instance.ShowInterstitial();
-		    }
+		   if(AdDriver.Instance.loadCount % AdDriver.Instance.interstitialInterval == 0){
+		        AdDriver.Instance.loadCount = 0;//Reset the loadcount
+		        AdDriver.Instance.ShowInterstitial();
+		  }
         }
     #endif
 

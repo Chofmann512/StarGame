@@ -31,10 +31,6 @@ public class StarDriver : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            BankShot();
-        }
         if (!startMove)
 		startFlick.position = new Vector3 (transform.position.x, 3, transform.position.z);
 		if (Input.GetButtonDown ("Fire1")) {

@@ -80,6 +80,10 @@ public class UIDriver : MonoBehaviour {
 		curUI = UI.Menu;
 	}
 
+    public void ShowVideoAd() {
+        AdDriver.Instance.ShowVideoAd();
+    }
+
 	public void ReplayGame(){
         buttonSound.Play();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
