@@ -209,7 +209,8 @@ public class UIDriver : MonoBehaviour {
             gameObject.GetComponent<GameDriver>().scoreCount.Pause();
             gameObject.GetComponent<GameDriver>().gameMusic.Pause();
             gameObject.GetComponent<GameDriver>().asteroidCapture.Pause();
-            gameObject.GetComponent<GameDriver>().starCharacter.GetComponent<starJitter>().starExplosion.Pause();
+            gameObject.GetComponent<GameDriver>().starCharacter.GetComponentInChildren<starJitter>().starExplosion.Pause();
+            gameObject.GetComponent<GameDriver>().starCharacter.GetComponent<StarDriver>().starSwipeSound.Pause();
         }
         else if (unpauseButton.IsActive()) {
             unpauseButton.gameObject.SetActive(false);
@@ -219,7 +220,8 @@ public class UIDriver : MonoBehaviour {
             gameObject.GetComponent<GameDriver>().scoreCount.UnPause();
             gameObject.GetComponent<GameDriver>().gameMusic.UnPause();
             gameObject.GetComponent<GameDriver>().asteroidCapture.UnPause();
-            gameObject.GetComponent<GameDriver>().starCharacter.GetComponent<starJitter>().starExplosion.UnPause();
+            gameObject.GetComponent<GameDriver>().starCharacter.GetComponentInChildren<starJitter>().starExplosion.UnPause();
+            gameObject.GetComponent<GameDriver>().starCharacter.GetComponent<StarDriver>().starSwipeSound.UnPause();
         }
     }
 
