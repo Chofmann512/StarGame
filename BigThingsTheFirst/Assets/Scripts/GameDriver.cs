@@ -283,6 +283,19 @@ public class GameDriver : MonoBehaviour {
         StartCoroutine(lerpScore());
     }
 
+    private void ContinueGame() {
+        musicManager.SetActive(true);
+        soundEffectManager.SetActive(true);
+
+        isGameOver = false;
+        Time.timeScale = 1.0f;
+        scoreText.SetActive(true);
+        GetComponent<UIDriver>().ToggleGameOverPanel();
+
+        //Reinitiate spawner
+        StartCoroutine(AsteroidTimer(3.0f));
+    }
+
 	void GameOver(){
         //End game
         musicManager.SetActive(false);

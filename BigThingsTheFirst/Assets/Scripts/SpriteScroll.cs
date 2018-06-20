@@ -9,15 +9,12 @@ public class SpriteScroll : MonoBehaviour {
 
 	public float OffsetX;
 	public float OffsetY;
-	// Use this for initialization
-	void Start () {
-
-	}
 
 	// Update is called once per frame
-	void FixedUpdate () {
-		OffsetX = Time.time * ScrollX;
-		OffsetY = Time.time * ScrollY;
+	void Update () {
+     
+        OffsetX = Time.unscaledTime * ScrollX;
+        OffsetY = Time.unscaledTime * ScrollY;
 		GetComponent<RawImage>().uvRect= new Rect (OffsetX, OffsetY,1,1);
 	}
 }
