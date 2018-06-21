@@ -63669,8 +63669,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1117350381}
-        m_MethodName: ContinueGame
+      - m_Target: {fileID: 1117350383}
+        m_MethodName: ShowVideoAd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

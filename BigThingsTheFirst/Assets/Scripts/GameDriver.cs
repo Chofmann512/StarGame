@@ -324,7 +324,7 @@ public class GameDriver : MonoBehaviour {
     #else
          if(isAdsRemoved != "true"){
 		    //Attempt to show interstitial
-		   if(AdDriver.Instance.loadCount % AdDriver.Instance.interstitialInterval == 0){
+		   if(AdDriver.Instance.loadCount % AdDriver.Instance.interstitialInterval == 0 && !hasContinued){
 		        AdDriver.Instance.loadCount = 0;//Reset the loadcount
 		        AdDriver.Instance.ShowInterstitial();
 		  }
