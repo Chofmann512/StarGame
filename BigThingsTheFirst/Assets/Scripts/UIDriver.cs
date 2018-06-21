@@ -30,10 +30,10 @@ public class UIDriver : MonoBehaviour {
 	private string facebookURL;
 	[SerializeField]
 	private string twitterURL;
-	private enum UI {Menu, Settings, Instructions, GameOver};
-	private UI curUI;
+	private enum UI {Menu, Settings, Instructions, GameOver};//Enumerated types used with handling "Escape" input
+	private UI curUI;//Enumerated types used with handling "Escape" input
 
-	public void Update(){
+    public void Update(){
 		if(Input.GetKeyDown(KeyCode.Escape)){
 			HandleEscapeInput ();
 		}
@@ -141,8 +141,15 @@ public class UIDriver : MonoBehaviour {
 	}
 
 	public void ToggleGameOverPanel(){
-		gameOverPanel.SetActive (true);
-		curUI = UI.GameOver;
+        if (!gameOverPanel.activeInHierarchy){
+            gameOverPanel.SetActive(true);
+            curUI = UI.GameOver;
+        }
+        else {
+            gameOverPanel.SetActive(false);
+            curUI = UI.Menu;
+        }
+		
 	}
 
 	public void ToggleSettingsPanel(){

@@ -242,6 +242,7 @@ public class AdDriver : MonoBehaviour {
     public void HandleRewardBasedVideoRewarded(object sender, Reward args)
     {
         //TODO: Change a flag allowing the game to continue when video closes
+        GameObject.Find("GameDriver").GetComponent<GameDriver>().ContinueGame();
     }
 
     public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)

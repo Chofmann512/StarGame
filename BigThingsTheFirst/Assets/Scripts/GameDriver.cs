@@ -33,12 +33,13 @@ public class GameDriver : MonoBehaviour {
     public int remainingScore;
     public static bool lerping;
 
-	private GameObject startPanel;
+    private GameObject startPanel;
 	private GameObject gameOverPanel;
 	private GameObject scoreText;
 	private GameObject bestScoreText;
 	private GPGSDriver gpgsDriver;
-	private bool isGameOver = true;//Flag used to tell whether or not the game is playing
+    private bool hasContinued;//Flag used to tell whether or not user has watched a video ad for an extra life
+    private bool isGameOver = true;//Flag used to tell whether or not the game is playing
 	private bool multiplier;
 	private int asteroidsCaught;
     private string isAdsRemoved = "false";
@@ -221,6 +222,7 @@ public class GameDriver : MonoBehaviour {
 
 		//Change to true that a game has been played
 		Replay.isReplay = 1;
+        hasContinued = false;
 
 		//Report Achievement
 		gpgsDriver.ReportAchievement("OneSmallStep");
@@ -263,17 +265,32 @@ public class GameDriver : MonoBehaviour {
         }
 		isGameOver = false;
 		StartCoroutine (AsteroidTimer(3.0f));
-        StartCoroutine(lerpScore());
+        StartCoroutine(LerpScore());
     }
 
-    private void ContinueGame() {
+    public void ContinueGame() {
+        hasContinued = true;
         musicManager.SetActive(true);
+        gameMusic.Play();
         soundEffectManager.SetActive(true);
 
         isGameOver = false;
         Time.timeScale = 1.0f;
         scoreText.SetActive(true);
+        StartCoroutine(LerpScore());
         GetComponent<UIDriver>().ToggleGameOverPanel();
+
+        //Repool active asteroids
+        while (activeAsteroids.Count != 0)
+        {
+            activeAsteroids.ElementAt(0).GetComponent<SphereCollider>().enabled = false;
+            activeAsteroids.ElementAt(0).GetComponent<Asteroid>().originalSpeed = 0;
+            activeAsteroids.ElementAt(0).GetComponent<Rigidbody>().isKinematic = true;
+            activeAsteroids.ElementAt(0).transform.position = starCharacter.transform.position;
+            activeAsteroids.ElementAt(0).transform.parent = starCharacter.transform;
+
+            StartCoroutine(Repool(activeAsteroids.ElementAt(0), poolingPosition, 0f));
+        }
 
         //Reinitiate spawner
         StartCoroutine(AsteroidTimer(3.0f));
@@ -286,16 +303,20 @@ public class GameDriver : MonoBehaviour {
 
 		isGameOver = true;
 		SubmitNewScore (score);
+        remainingScore = 0;//Reset the lerping amount in case game is continued
 		Time.timeScale = 0f;
 		//TODO: Rewrite this using UIDriver for consistency
 		scoreText.SetActive (false);
 		//gameOverPanel.SetActive (true);
 		GetComponent<UIDriver>().ToggleGameOverPanel();
-        if (AdDriver.Instance.IsVideoLoaded()) {
+        if (AdDriver.Instance.IsVideoLoaded() && !hasContinued){
             videoAdUnit.SetActive(true);
         }
-		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Show ending score for the current round
-		bestScoreText.GetComponent<Text>().text = "Best Score : " + highestScore.ToString(); //Show highest score
+        else {
+            videoAdUnit.SetActive(false);
+        }
+		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Update ending score text
+		bestScoreText.GetComponent<Text>().text = "Best Score : " + highestScore.ToString(); //Update highest score text
 		GameObject.Find("/Canvas/GameOverPanel").GetComponentInChildren<Animator>().Play("Text_Breathe");
 
         //Pre-processor directive to not call ads in the unity editor
@@ -324,7 +345,7 @@ public class GameDriver : MonoBehaviour {
 		gpgsDriver.OpenSave(true);
 	}
 
-	public IEnumerator lerpScore(){
+	public IEnumerator LerpScore(){
        
         if(remainingScore == 0)
         {
@@ -365,7 +386,7 @@ public class GameDriver : MonoBehaviour {
             
         }
         yield return new WaitForSeconds(.02f);
-        StartCoroutine(lerpScore());
+        StartCoroutine(LerpScore());
 	}
 
     //Checks if the achieved score is a new all time best
