@@ -46,7 +46,6 @@ public class GameDriver : MonoBehaviour {
 	private int totalCurrency;//Used to track the total amount of in-game currency
 	private int highestScore;//Used to load locally, the highest score achieved
                              //Used to track and report achievement progress
-                             //public float TimeToLerp;
 
     public void SetIsAdsRemoved(string x) {
         isAdsRemoved = x;
@@ -309,13 +308,18 @@ public class GameDriver : MonoBehaviour {
 		scoreText.SetActive (false);
 		//gameOverPanel.SetActive (true);
 		GetComponent<UIDriver>().ToggleGameOverPanel();
-        if (AdDriver.Instance.IsVideoLoaded() && !hasContinued){
-            videoAdUnit.SetActive(true);
-        }
-        else {
-            videoAdUnit.SetActive(false);
-        }
-		GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Update ending score text
+
+        #if UNITY_EDITOR
+        #else
+            if (AdDriver.Instance.IsVideoLoaded() && !hasContinued){
+                videoAdUnit.SetActive(true);
+            }
+            else {
+                videoAdUnit.SetActive(false);
+            }
+        #endif
+
+        GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Update ending score text
 		bestScoreText.GetComponent<Text>().text = "Best Score : " + highestScore.ToString(); //Update highest score text
 		GameObject.Find("/Canvas/GameOverPanel").GetComponentInChildren<Animator>().Play("Text_Breathe");
 
