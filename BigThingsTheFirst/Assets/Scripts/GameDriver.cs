@@ -21,6 +21,7 @@ public class GameDriver : MonoBehaviour {
 	public List<GameObject> asteroids;
 	public GameObject poolingPosition;
     public GameObject videoAdUnit;
+    public GameObject continueUnit;
 	public static int multiplierNum;
 	public AudioSource scoreCount;
     public AudioSource menuMusic;
@@ -311,11 +312,20 @@ public class GameDriver : MonoBehaviour {
 
         #if UNITY_EDITOR
         #else
-            if (AdDriver.Instance.IsVideoLoaded() && !hasContinued){
+            if (AdDriver.Instance.IsVideoLoaded() && !hasContinued && isAdsRemoved != "true"){
+                //Player has not paid for ads, but can watch a video ad to continue
                 videoAdUnit.SetActive(true);
+                continueUnit.SetActive(false);
+            }
+            else if(!hasContinued){
+                //Player has paid to not see ads and gets to use a continue button
+                continueUnit.SetActive(true);
+                videoAdUnit.SetActive(false);
             }
             else {
+                //Player has already continued this session once
                 videoAdUnit.SetActive(false);
+                continueUnit.SetActive(false);
             }
         #endif
 
