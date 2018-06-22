@@ -311,6 +311,12 @@ public class GameDriver : MonoBehaviour {
 		GetComponent<UIDriver>().ToggleGameOverPanel();
 
         #if UNITY_EDITOR
+            if(!hasContinued){
+                continueUnit.SetActive(true);
+            }
+            else{
+                continueUnit.SetActive(false);
+            }
         #else
             if (AdDriver.Instance.IsVideoLoaded() && !hasContinued && isAdsRemoved != "true"){
                 //Player has not paid for ads, but can watch a video ad to continue
