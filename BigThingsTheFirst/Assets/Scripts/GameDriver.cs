@@ -323,7 +323,7 @@ public class GameDriver : MonoBehaviour {
                 videoAdUnit.SetActive(true);
                 continueUnit.SetActive(false);
             }
-            else if(!hasContinued){
+            else if(!hasContinued && isAdsRemoved == "true"){
                 //Player has paid to not see ads and gets to use a continue button
                 continueUnit.SetActive(true);
                 videoAdUnit.SetActive(false);
