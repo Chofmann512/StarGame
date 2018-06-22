@@ -242,7 +242,7 @@ public class AdDriver : MonoBehaviour {
     public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
     {
         //GameObject.Find("GameDriver").GetComponent<GameDriver>().ContinueGame();
-        isRewarded = true;
+       
         this.RequestRewardBasedVideo();
         MonoBehaviour.print("HandleRewardBasedVideoClosed event received");
         //TODO: Call ContinueGame()
@@ -250,8 +250,9 @@ public class AdDriver : MonoBehaviour {
 
     public void HandleRewardBasedVideoRewarded(object sender, Reward args)
     {
+        isRewarded = true;
         //TODO: Change a flag allowing the game to continue when video closes
-       // GameObject.Find("GameDriver").GetComponent<GameDriver>().ContinueGame();
+        // GameObject.Find("GameDriver").GetComponent<GameDriver>().ContinueGame();
     }
 
     public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
