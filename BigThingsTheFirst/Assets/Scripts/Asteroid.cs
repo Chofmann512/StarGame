@@ -15,21 +15,21 @@ public class Asteroid : MonoBehaviour {
 	void Awake(){
 		rb = gameObject.GetComponent<Rigidbody> ();
 		gameObject.transform.position = GameObject.Find ("Pooling Position").transform.position;
-
 		gameObject.SetActive (false);
 	}
 
 	void Update(){
+
 		if (!isInitialized) {
 			return;
 		}
 
 		gameObject.GetComponent<Rigidbody> ().velocity = gameObject.GetComponent<Rigidbody> ().velocity.normalized * originalSpeed;
 		speed = rb.velocity.magnitude;
-
 	}
 
 	void OnTriggerEnter(Collider other){
+
 		if(other.gameObject.name != "AsteroidEnterTrigger"){
 			return;
 		}

@@ -1,19 +1,10 @@
-﻿//**************************************************************************************************************************************************
-//
-//
-//TODO: Add algorithm to increase chance of more force being added to each asteroid as the game progresses,
-//		also add algorithm of spawning different asteroids (color/shape).
-//
-//
-//**************************************************************************************************************************************************
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour {
 
-	[SerializeField]
 	public int maxThrust = 6;//The ceiling amount of speed to apply to a newly spawned asteroid
 	public List<GameObject> asteroids = new List<GameObject>();//Data container for asteroid gameobjects
 
@@ -46,6 +37,7 @@ public class AsteroidSpawner : MonoBehaviour {
 		Debug.Log ("Initialized upperLeftCorner at : " + GameObject.Find("/SpawnBoundaries/UpperLeftCorner").transform.position);
 
 		activeAsteroids = gameObject.GetComponent<GameDriver> ().activeAsteroids;//Set a reference to the list of spawned asteroids to push asteroids into
+
 		if(asteroids.Count == 0){
 			Debug.LogError ("The list 'asteroids' contained in 'AsteroidSpawner.cs' attached to '" + gameObject.name + "' is empty. Please add asteroid gameobjects to the list.");
 		}
@@ -53,6 +45,7 @@ public class AsteroidSpawner : MonoBehaviour {
 
 
     public void SpawnAsteroid() {
+
 		if(asteroids.Count == 0){
 			Debug.Log ("The max amount of asteroids are currently spawned.");
 			return;
@@ -63,7 +56,8 @@ public class AsteroidSpawner : MonoBehaviour {
 
 		//Compute an origin spawn point on the given side
         switch (side) {
-		case 1://left side
+
+		    case 1://left side
 			spawnPosition = new Vector3 (upperLeftCorner.x, upperLeftCorner.y, Random.Range (bottomLeftCorner.z, upperLeftCorner.z));
                 break;
 
@@ -95,12 +89,8 @@ public class AsteroidSpawner : MonoBehaviour {
 		asteroids.RemoveAt (asteroidsIndex);
 		activeAsteroids.Add (curAsteroid);
 
-
 		curAsteroid.GetComponent<SphereCollider> ().radius = Random.Range (.0120f, .0149f);
 		ApplyForce(curAsteroid);
-
-
-		Debug.Log ("Spawn position of an asteroid : " + spawnPosition);
     }
 
 	//Ramps up starting speed of an asteroid based on how high your score is.

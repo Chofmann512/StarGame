@@ -30,8 +30,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
     private void Start()
     {
         // If we haven't set up the Unity Purchasing reference
-        if (m_StoreController == null)
-        {
+        if (m_StoreController == null){
             // Begin to configure our connection to Purchasing
             InitializePurchasing();
         }
@@ -40,8 +39,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
     public void InitializePurchasing()
     {
         // If we have already connected to Purchasing ...
-        if (IsInitialized())
-        {
+        if (IsInitialized()){
             // ... we are done here.
             return;
         }
@@ -79,30 +77,26 @@ public class IAPManager : MonoBehaviour, IStoreListener
     void BuyProductID(string productId)
     {
         // If Purchasing has been initialized ...
-        if (IsInitialized())
-        {
+        if (IsInitialized()){
             // ... look up the Product reference with the general product identifier and the Purchasing 
             // system's products collection.
             Product product = m_StoreController.products.WithID(productId);
 
             // If the look up found a product for this device's store and that product is ready to be sold ... 
-            if (product != null && product.availableToPurchase)
-            {
+            if (product != null && product.availableToPurchase){
                 Debug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
                 // ... buy the product. Expect a response either through ProcessPurchase or OnPurchaseFailed 
                 // asynchronously.
                 m_StoreController.InitiatePurchase(product);
             }
             // Otherwise ...
-            else
-            {
+            else{
                 // ... report the product look-up failure situation  
                 Debug.Log("BuyProductID: FAIL. Not purchasing product, either is not found or is not available for purchase");
             }
         }
         // Otherwise ...
-        else
-        {
+        else{
             // ... report the fact Purchasing has not succeeded initializing yet. Consider waiting longer or 
             // retrying initiailization.
             Debug.Log("BuyProductID FAIL. Not initialized.");
@@ -115,17 +109,14 @@ public class IAPManager : MonoBehaviour, IStoreListener
     public void RestorePurchases()
     {
         // If Purchasing has not yet been set up ...
-        if (!IsInitialized())
-        {
+        if (!IsInitialized()){
             // ... report the situation and stop restoring. Consider either waiting longer, or retrying initialization.
             Debug.Log("RestorePurchases FAIL. Not initialized.");
             return;
         }
 
         // If we are running on an Apple device ... 
-        if (Application.platform == RuntimePlatform.IPhonePlayer ||
-            Application.platform == RuntimePlatform.OSXPlayer)
-        {
+        if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.OSXPlayer){
             // ... begin restoring purchases
             Debug.Log("RestorePurchases started ...");
 
@@ -140,9 +131,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
           //      Debug.Log("RestorePurchases continuing: " + result + ". If no further messages, no purchases available to restore.");
          //   });
         }
-        // Otherwise ...
-        else
-        {
+        else{
             // We are not running on an Apple device. No work is necessary to restore purchases.
             Debug.Log("RestorePurchases FAIL. Not supported on this platform. Current = " + Application.platform);
         }
@@ -175,8 +164,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
         // A non-consumable product has been purchased by this user.
-        if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_REMOVE_ADS, StringComparison.Ordinal))
-        {
+        if (String.Equals(args.purchasedProduct.definition.id, PRODUCT_REMOVE_ADS, StringComparison.Ordinal)){
             Debug.Log("Ads Removed!");
 
             //Save a player pref isAdsRemoved
@@ -185,9 +173,8 @@ public class IAPManager : MonoBehaviour, IStoreListener
             //Reload Scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        // Or ... an unknown product has been purchased by this user. Fill in additional products here....
-        else
-        {
+        else{
+
             Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
         }
 

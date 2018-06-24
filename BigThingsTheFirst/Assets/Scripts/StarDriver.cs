@@ -25,21 +25,26 @@ public class StarDriver : MonoBehaviour {
 	void Start () {
 		flickBool = false;
 		bankShot = 1;
+
 		if(gameDriver == null){
 			Debug.LogError ("StarDriver is missing a reference to GameDriver, please drag a reference in.");
 		}
+
 	}
 	// Update is called once per frame
 	void Update () {
-        if (!startMove)
-		startFlick.position = new Vector3 (transform.position.x, 3, transform.position.z);
+        if (!startMove) {
+            startFlick.position = new Vector3(transform.position.x, 3, transform.position.z);
+        }
+
 		if (Input.GetButtonDown ("Fire1")) {
 			Vector3 v3 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+
 			if (Vector3.Distance(v3, startFlick.position) < maxDistanceGrab) {
 				gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				CancelInvoke ("cancelBankShot");
-                if (!GameDriver.lerping)
-                {
+
+                if (!GameDriver.lerping){
                     bankShot = 1;
                     bankShotted = false;
                 }
@@ -48,11 +53,13 @@ public class StarDriver : MonoBehaviour {
 				flickBool = true;
 				startFlick.position = v3;
 				startV3 = startFlick.position;
-			} else {
+			}
+            else {
 				flickBool = false;
 				startMove = false;
 			}
 		}
+
 		if (Input.GetButtonUp ("Fire1")&& startMove) {
 			
 			Vector3 v3 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
@@ -60,40 +67,48 @@ public class StarDriver : MonoBehaviour {
 			startFlick.LookAt (endFlick);
 			forceAdd ();
 		}
-		if (flickBool)
-			flickTimer += Time.deltaTime;
+
+        if (flickBool) {
+            flickTimer += Time.deltaTime;
+        }
+			
 	}
 	void forceAdd(){
 
 		direction = (startV3 - endFlick.position).normalized;
 		startFlick.position = new Vector3 (transform.position.x, 3, transform.position.z);
 		float dist = Vector3.Distance (startV3, endFlick.position);
-		if (flickTimer < .02)
-			flickTimer = .02f;
-		if (dist > 10)
-			dist = 10;
-        float forceShot = ((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
-        if (forceShot > 45)
-        {
-            forceShot = 45;
-        }
-            gameObject.GetComponent<Rigidbody>().AddForce(-direction * forceShot, ForceMode.Impulse);
 
-         Debug.Log(forceShot);
-        if (soundEffectManager.activeInHierarchy)
-        {
-            float vol = (flickForce / (flickTimer * 80)*dist)/1100;
+        if (flickTimer < .02) {
+            flickTimer = .02f;
+        }
+			
+        if (dist > 10) {
+            dist = 10;
+        }
+
+        float forceShot = ((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
+
+        if (forceShot > 40){
+            forceShot = 40;
+        }
+
+        gameObject.GetComponent<Rigidbody>().AddForce(-direction * forceShot, ForceMode.Impulse);
+
+        if (soundEffectManager.activeInHierarchy){
+            float vol = (flickForce / (flickTimer * 80)*dist)/900;
             starSwipeSound.volume = vol;
             starSwipeSound.Play();
 
         }
-        //gameObject.GetComponent<Rigidbody> ().velocity.magnitude
+        
 		flickBool = false;
 		flickTimer = 0;
 		startMove = false;
 	}
 
 	void OnTriggerEnter(Collider other){
+
 		if (other.tag == "Asteroid") {
 			gameDriver.AsteroidCollision (this.gameObject, other.gameObject);
 		}
@@ -110,22 +125,17 @@ public class StarDriver : MonoBehaviour {
         bankShotted = true;
 		CancelInvoke ("cancelBankShot");
 		Invoke ("cancelBankShot", 1.4f);
-        
-        //callNum
 	}
 	public void cancelBankShot(){
-        if (GameDriver.lerping == false)
-        {
+
+        if (GameDriver.lerping == false){
             bankShot = 1;
-            uiDriver.UpdateMultiplierText(StarDriver.bankShot);
+            gameDriver.GetComponent<UIDriver>().UpdateMultiplierText(StarDriver.bankShot);
         }
-        else
-        {
+        else{
             bankShot = 2;
         }
-        bankShotted = false;
-        
-        //callNum
-    }
 
+        bankShotted = false;
+    }
 }

@@ -11,15 +11,8 @@ using UnityEngine.SocialPlatforms;
 
 public class GPGSDriver : MonoBehaviour {
 
-	//[SerializeField]
-	//private Text signInButtonText;
-	//[SerializeField]
-	//private Text authStatus;
-
 	// Use this for initialization
 	void Start () {
-	//	GameObject startButton = GameObject.Find ("startButton");//TODO: Remove this??
-	//	EventSystem.current.firstSelectedGameObject = startButton;//TODO: Remove this??
 
 		//Create GPG client
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().EnableSavedGames().Build();
@@ -46,7 +39,6 @@ public class GPGSDriver : MonoBehaviour {
 		} 
 		else {
 			//login failed
-
 			Debug.Log ("Sign-in failed");
 		}
 	}
@@ -61,9 +53,6 @@ public class GPGSDriver : MonoBehaviour {
 			// Sign out of play games
 			PlayGamesPlatform.Instance.SignOut();
 			GetComponent<UIDriver> ().ToggleSignInButtons ();
-			// Reset UI
-			//signInButtonText.text = "Sign In";
-			//authStatus.text = "";
 		}
 
 	}
@@ -252,9 +241,7 @@ public class GPGSDriver : MonoBehaviour {
 		//[0] is highscore
 		//[1] is isAdsRemoved
 		PlayerPrefs.SetInt ("Hiscore", int.Parse (data [0]));
-		GetComponent<GameDriver> ().SetTotalCurrency(int.Parse (data[1]));
         GetComponent<GameDriver>().SetIsAdsRemoved(data[1]);
-        //TODO: possibly also set player prefs for ads here like above ^^
 	}
 
 	public void OpenSave(bool saving){
@@ -273,8 +260,9 @@ public class GPGSDriver : MonoBehaviour {
 
 		Debug.Log ("SaveGameOpened");
 		if(status == SavedGameRequestStatus.Success){
-			if(isSaving)//Writing
-			{
+
+            //Writing
+            if (isSaving){
 				byte[] data = System.Text.ASCIIEncoding.ASCII.GetBytes (GetSaveString());
 				SavedGameMetadataUpdate update = new SavedGameMetadataUpdate.Builder ().WithUpdatedDescription ("Saved at " + DateTime.Now.ToString()).Build();
 

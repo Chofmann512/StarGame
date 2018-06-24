@@ -8,31 +8,33 @@ using UnityEngine.SceneManagement;
 
 public class GameDriver : MonoBehaviour {
 
-	[SerializeField]
-	private int score;
-	[SerializeField]
-	public GameObject starCharacter;
+    [Header("Spawner Parameters")]
 	[SerializeField]
 	private float minSpawnTimerBound;
 	[SerializeField]
 	private float maxSpawnTimerBound;
+    [HideInInspector]
+    public List<GameObject> activeAsteroids = new List<GameObject>();
+    [HideInInspector]
+    public List<GameObject> asteroids;
 
-	public List<GameObject> activeAsteroids = new List<GameObject>();
-	public List<GameObject> asteroids;
+    [Header("GameObjects")]
+    public GameObject starCharacter;
 	public GameObject poolingPosition;
     public GameObject videoAdUnit;
     public GameObject continueUnit;
-	public static int multiplierNum;
-	public AudioSource scoreCount;
+    public GameObject musicManager;
+    public GameObject soundEffectManager;
+    [Header("AudioSources")]
+    public AudioSource scoreCount;
     public AudioSource menuMusic;
     public AudioSource gameMusic;
     public AudioSource asteroidCapture;
     public AudioSource asteroidSpawn;
-    public GameObject musicManager;
-    public GameObject soundEffectManager;
-    public UIDriver uiDriver;
+    [HideInInspector]
     public int remainingScore;
     public static bool lerping;
+    public static int multiplierNum;
 
     private GameObject startPanel;
 	private GameObject gameOverPanel;
@@ -43,28 +45,23 @@ public class GameDriver : MonoBehaviour {
     private bool isGameOver = true;//Flag used to tell whether or not the game is playing
 	private bool multiplier;
 	private int asteroidsCaught;
+    private int score;
     private string isAdsRemoved = "false";
-	private int totalCurrency;//Used to track the total amount of in-game currency
 	private int highestScore;//Used to load locally, the highest score achieved
                              //Used to track and report achievement progress
 
     public void SetIsAdsRemoved(string x) {
         isAdsRemoved = x;
     }
+
     public string GetIsAdsRemoved() {
         return(isAdsRemoved);
     }
-	public void SetTotalCurrency(int x){
-		totalCurrency = x;
-	}
+
 	public void SetHighestScore(int x){
 		highestScore = x;
 	}
 
-	public int GetTotalCurrency(){
-        //Backklogged
-		return(totalCurrency);
-	}
 	public int GetHighestScore(){
 		return(highestScore);
 	}
@@ -76,8 +73,7 @@ public class GameDriver : MonoBehaviour {
 
     private void OnEnable()
     {
-        if (musicManager.activeInHierarchy)
-        {
+        if (musicManager.activeInHierarchy){
             menuMusic.Play();
         }
     }
@@ -99,6 +95,7 @@ public class GameDriver : MonoBehaviour {
 
 		gpgsDriver = GetComponent<GPGSDriver> ();
 		asteroids = gameObject.GetComponent<AsteroidSpawner> ().asteroids;
+
 		if(poolingPosition == null){
 			Debug.LogError ("Missing a reference to a pooling position, please create an empty GO called 'Pooling Position' and place it at (20, 0, 20).");
 		}
@@ -111,11 +108,13 @@ public class GameDriver : MonoBehaviour {
 
 	//An event called by the StarDriver when it detects a collision with an asteroid
 	public void AsteroidCollision(GameObject star, GameObject asteroid){
+
 		if(star.GetComponent<StarDriver>().color == asteroid.GetComponent<Asteroid>().color){
+
 			if(StarDriver.bankShot == 2){
 				gpgsDriver.ReportAchievement ("BankShot!");
 			}
-			//TODO: Possibly compress this call below
+
 			gpgsDriver.ReportAchievement("TheBeginner");
 
 			//Caught an asteroid set it under the star so the particles can flow into the star
@@ -126,17 +125,22 @@ public class GameDriver : MonoBehaviour {
 			asteroid.transform.parent = star.transform;
 			asteroidsCaught++;
             //Increment score
-            //LerpScore(100);//TODO: add checking for multiple asteroid catches
-            if(soundEffectManager.activeInHierarchy)
-            asteroidCapture.Play();
+
+            if (soundEffectManager.activeInHierarchy) {
+                asteroidCapture.Play();
+            }
+            
 			if (!multiplier) {
                 remainingScore += 100* multiplierNum * StarDriver.bankShot;
-                uiDriver.UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
+                gameObject.GetComponent<UIDriver>().UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
                 multiplierNum = 1;
                 multiplier = true;
-			} else {
+			}
+            else {
+
 				if (multiplierNum < 4) {
 					multiplierNum++;
+
                     if (multiplierNum == 2) {
                         //Report Double!
                         gpgsDriver.ReportAchievement("Double!");
@@ -146,7 +150,7 @@ public class GameDriver : MonoBehaviour {
                         gpgsDriver.ReportAchievement("Triple!");
                     }
                     
-                    uiDriver.UpdateMultiplierText(multiplierNum*StarDriver.bankShot);
+                    gameObject.GetComponent<UIDriver>().UpdateMultiplierText(multiplierNum * StarDriver.bankShot);
 				}
                 remainingScore += 100* multiplierNum * StarDriver.bankShot;
 
@@ -164,7 +168,6 @@ public class GameDriver : MonoBehaviour {
 	}
 
 	//Repools a game object to how it started as when the game opened
-	//TODO: possibly pass in a parameter to use in WaitForSeconds
 	IEnumerator Repool(GameObject go, GameObject origin, float delay){
 		activeAsteroids.Remove (go);
 		yield return new WaitForSeconds(delay);
@@ -251,18 +254,18 @@ public class GameDriver : MonoBehaviour {
 		gameOverPanel.SetActive(false);
 		starCharacter.SetActive (true);
 		scoreText.SetActive (true);
-        uiDriver.pauseButton.gameObject.SetActive(true);
+        gameObject.GetComponent<UIDriver>().pauseButton.gameObject.SetActive(true);
 		score = 0;
 		multiplierNum = 1;
 		scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
 		gameObject.GetComponent<AsteroidSpawner> ().maxThrust = 6;//Reset base asteroid speed
 
         //Game is starting
-        if (musicManager.activeInHierarchy)
-        {
+        if (musicManager.activeInHierarchy){
                 menuMusic.Stop();
                 gameMusic.Play();
         }
+
 		isGameOver = false;
 		StartCoroutine (AsteroidTimer(3.0f));
         StartCoroutine(LerpScore());
@@ -281,8 +284,7 @@ public class GameDriver : MonoBehaviour {
         GetComponent<UIDriver>().ToggleGameOverPanel();
 
         //Repool active asteroids
-        while (activeAsteroids.Count != 0)
-        {
+        while (activeAsteroids.Count != 0){
             activeAsteroids.ElementAt(0).GetComponent<SphereCollider>().enabled = false;
             activeAsteroids.ElementAt(0).GetComponent<Asteroid>().originalSpeed = 0;
             activeAsteroids.ElementAt(0).GetComponent<Rigidbody>().isKinematic = true;
@@ -305,9 +307,8 @@ public class GameDriver : MonoBehaviour {
 		SubmitNewScore (score);
         remainingScore = 0;//Reset the lerping amount in case game is continued
 		Time.timeScale = 0f;
-		//TODO: Rewrite this using UIDriver for consistency
+
 		scoreText.SetActive (false);
-		//gameOverPanel.SetActive (true);
 		GetComponent<UIDriver>().ToggleGameOverPanel();
 
         #if UNITY_EDITOR
@@ -367,40 +368,41 @@ public class GameDriver : MonoBehaviour {
 
 	public IEnumerator LerpScore(){
        
-        if(remainingScore == 0)
-        {
+        if(remainingScore == 0){
             multiplier = false;
             multiplierNum = 1;
             lerping = false;
-            
-
-                uiDriver.UpdateMultiplierText(1);
+            gameObject.GetComponent<UIDriver>().UpdateMultiplierText(1);
             
         }
-        if (remainingScore > 0)
-        {
+
+        if (remainingScore > 0){
             lerping = true;
             int bankShot = 1;
-            if (StarDriver.bankShot == 2)
+
+            if (StarDriver.bankShot == 2) {
                 bankShot = 2;
-            else
-            {
+            }
+            else{
                 bankShot = 1;
             }
-            if ((int)(remainingScore / 75) == 0)
-            {
+
+            if ((int)(remainingScore / 75) == 0){
                 score += 1;
                 remainingScore -= 1;
             }
             else { 
-            score += (int)(remainingScore / 75);
-            remainingScore -= (int)(remainingScore / 75);
+                score += (int)(remainingScore / 75);
+                remainingScore -= (int)(remainingScore / 75);
              }
+
             scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
-            if (soundEffectManager.activeInHierarchy)
-            {
-                if (!scoreCount.isPlaying)
+
+            if (soundEffectManager.activeInHierarchy){
+
+                if (!scoreCount.isPlaying) {
                     scoreCount.Play();
+                }
             }
             scoreText.GetComponent<Text>().text = "Score : " + score.ToString();
             
@@ -411,6 +413,7 @@ public class GameDriver : MonoBehaviour {
 
     //Checks if the achieved score is a new all time best
     public void SubmitNewScore(int newScore){
+
 		if(newScore > highestScore){
 			highestScore = newScore;
 			SaveHighestScore();
@@ -418,6 +421,7 @@ public class GameDriver : MonoBehaviour {
 	}
 		
 	private void LoadHighestScoreLocal(){
+
 		if(PlayerPrefs.HasKey("Hiscore")){
 			highestScore = PlayerPrefs.GetInt ("Hiscore");
 		}
@@ -425,6 +429,7 @@ public class GameDriver : MonoBehaviour {
 
 	//Sets the locally saved high score to the value held in highestScore
 	private void SaveHighestScore(){
+
 		PlayerPrefs.SetInt ("Hiscore", highestScore);
         GetComponent<GPGSDriver>().OpenSave(true);
 	}

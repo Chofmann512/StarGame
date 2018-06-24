@@ -8,13 +8,15 @@ using UnityEngine.UI;
 //scene flow/actions from UI elements such as buttons
 public class UIDriver : MonoBehaviour {
 
-	//Serialize drop down?
+	[Header("UI Panels")]
 	public GameObject settingsPanel;
 	public GameObject startPanel;
 	public GameObject gameOverPanel;
 	public GameObject instructionsPanel;
     public GameObject musicManager;
     public GameObject soundEffectManager;
+    [Space(10)]
+    [Header("Buttons")]
 	public Button activeMusicButton;
 	public Button activeSoundFXButton;
 	public Button mutedMusicButton;
@@ -23,6 +25,7 @@ public class UIDriver : MonoBehaviour {
 	public Button googleSignOutButton;
     public Button pauseButton;
     public Button unpauseButton;
+    [Space(10)]
     public Text scoreMultiplierText;
     public AudioSource buttonSound;
 
@@ -179,7 +182,6 @@ public class UIDriver : MonoBehaviour {
 			mutedSoundFXButton.gameObject.SetActive (true);
             soundEffectManager.SetActive(false);
             PlayerPrefs.SetInt("SoundFX", 1);
-            //TODO: Mute the SoundFX sound channel
         }
 		else if(mutedSoundFXButton.IsActive()){
             buttonSound.Play();
@@ -187,7 +189,6 @@ public class UIDriver : MonoBehaviour {
 			mutedSoundFXButton.gameObject.SetActive (false);
             soundEffectManager.SetActive(true);
             PlayerPrefs.SetInt("SoundFX", 0);
-            //TODO: Unmute the SoundFX sound channel
         }
 	}
 
@@ -197,7 +198,6 @@ public class UIDriver : MonoBehaviour {
 			mutedMusicButton.gameObject.SetActive (true);
             musicManager.SetActive(false);
             PlayerPrefs.SetInt("Music", 1);
-            //TODO: Mute the music sound channel
         }
 		else if(mutedMusicButton.IsActive()){
             buttonSound.Play();
@@ -206,7 +206,6 @@ public class UIDriver : MonoBehaviour {
             musicManager.SetActive(true);
             GameObject.Find("Stars").GetComponent<AudioSource>().Play();
             PlayerPrefs.SetInt("Music", 0);
-			//TODO: Unmute the music sound channel
 		}
 	}
 

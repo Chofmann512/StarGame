@@ -165,9 +165,11 @@ public class AdDriver : MonoBehaviour {
 	}
 
     public void ShowVideoAd() {
+
         if (rewardBasedVideo.IsLoaded()) {
             rewardBasedVideo.Show();
         }
+
         return;
     }
 
@@ -184,31 +186,26 @@ public class AdDriver : MonoBehaviour {
     //Insterstitial Ad Event Handlers----------------------------------------------------------
     //-----------------------------------------------------------------------------------------
     #region
-    public void HandleOnAdLoaded(object sender, EventArgs args)
-    {
+    public void HandleOnAdLoaded(object sender, EventArgs args){
         MonoBehaviour.print("HandleAdLoaded event received");
     }
 
-    public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-    {
+    public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args){
         MonoBehaviour.print("HandleFailedToReceiveAd event received with message: "
                             + args.Message);
     }
 
-    public void HandleOnAdOpened(object sender, EventArgs args)
-    {
+    public void HandleOnAdOpened(object sender, EventArgs args){
         MonoBehaviour.print("HandleAdOpened event received");
     }
 
-    private void HandleOnAdClosed(object sender, EventArgs args)
-    {
+    private void HandleOnAdClosed(object sender, EventArgs args){
         interstitial.Destroy();
         RequestInterstitialAd();
         return;
     }
 
-    public void HandleOnAdLeavingApplication(object sender, EventArgs args)
-    {
+    public void HandleOnAdLeavingApplication(object sender, EventArgs args){
         MonoBehaviour.print("HandleAdLeavingApplication event received");
     }
 
@@ -219,44 +216,33 @@ public class AdDriver : MonoBehaviour {
     //Reward Video Event Handlers--------------------------------------------------------------
     //-----------------------------------------------------------------------------------------
     #region
-    public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
-    {
+    public void HandleRewardBasedVideoLoaded(object sender, EventArgs args){
         MonoBehaviour.print("HandleRewardBasedVideoLoaded event received");
     }
 
-    public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-    {
+    public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args){
         MonoBehaviour.print("HandleRewardBasedVideoFailedToLoad event received with message: " + args.Message);
     }
 
-    public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
-    {
+    public void HandleRewardBasedVideoOpened(object sender, EventArgs args){
         MonoBehaviour.print("HandleRewardBasedVideoOpened event received");
     }
 
-    public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
-    {
+    public void HandleRewardBasedVideoStarted(object sender, EventArgs args){
         MonoBehaviour.print("HandleRewardBasedVideoStarted event received");
     }
 
-    public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
-    {
-        //GameObject.Find("GameDriver").GetComponent<GameDriver>().ContinueGame();
-       
+    public void HandleRewardBasedVideoClosed(object sender, EventArgs args){
+
         this.RequestRewardBasedVideo();
         MonoBehaviour.print("HandleRewardBasedVideoClosed event received");
-        //TODO: Call ContinueGame()
     }
 
-    public void HandleRewardBasedVideoRewarded(object sender, Reward args)
-    {
+    public void HandleRewardBasedVideoRewarded(object sender, Reward args){
         isRewarded = true;
-        //TODO: Change a flag allowing the game to continue when video closes
-        // GameObject.Find("GameDriver").GetComponent<GameDriver>().ContinueGame();
     }
 
-    public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
-    {
+    public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args){
         MonoBehaviour.print("HandleRewardBasedVideoLeftApplication event received");
     }
     #endregion

@@ -5,11 +5,6 @@ using UnityEngine;
 public class TextureScroll : MonoBehaviour {
 	public float ScrollX = .5f;
 	public float ScrollY = .5f;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
