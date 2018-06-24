@@ -73,9 +73,9 @@ public class StarDriver : MonoBehaviour {
 		if (dist > 10)
 			dist = 10;
         float forceShot = ((flickForce / (flickTimer * 80)) * dist * Time.deltaTime);
-        if (forceShot > 30)
+        if (forceShot > 45)
         {
-            forceShot = 30;
+            forceShot = 45;
         }
             gameObject.GetComponent<Rigidbody>().AddForce(-direction * forceShot, ForceMode.Impulse);
 

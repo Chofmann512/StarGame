@@ -39043,7 +39043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92fb704836937a44e946e73786538c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flickForce: 1100
+  flickForce: 1700
   startFlick: {fileID: 1821051018}
   endFlick: {fileID: 176968312}
   flickTimer: 0
