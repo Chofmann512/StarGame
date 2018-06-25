@@ -22918,7 +22918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e4762bbe3be5b4fa06ff55f7b4f580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScrollX: 0.75
+  ScrollX: 1
   ScrollY: 0
 --- !u!23 &685177186
 MeshRenderer:
@@ -38757,23 +38757,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c8536eb4e580d44b9328d93395fd4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  starCharacter: {fileID: 1160393069}
   minSpawnTimerBound: 2
   maxSpawnTimerBound: 7
   activeAsteroids: []
   asteroids: []
+  starCharacter: {fileID: 1160393069}
   poolingPosition: {fileID: 1094101494}
   videoAdUnit: {fileID: 2101808775}
   continueUnit: {fileID: 150192232}
+  musicManager: {fileID: 1049637800}
+  soundEffectManager: {fileID: 481163792}
   scoreCount: {fileID: 1818052250}
   menuMusic: {fileID: 1073264769}
   gameMusic: {fileID: 929550327}
   asteroidCapture: {fileID: 226355727}
   asteroidSpawn: {fileID: 1555116128}
-  musicManager: {fileID: 1049637800}
-  soundEffectManager: {fileID: 481163792}
-  uiDriver: {fileID: 1117350383}
   remainingScore: 0
 --- !u!114 &1117350382
 MonoBehaviour:
