@@ -56,7 +56,7 @@ public class AdDriver : MonoBehaviour {
         #endif
 
         //request a banner
-        //this.RequestBannerAd();
+        this.RequestBannerAd();
 
         //Request an interstitial ad
         this.RequestInterstitialAd();
@@ -164,6 +164,14 @@ public class AdDriver : MonoBehaviour {
         return;
 	}
 
+    public void ShowBanner() {
+        #if UNITY_EDITOR
+            return;
+        #else
+            bannerView.Show();
+        #endif
+    }
+
     public void ShowVideoAd() {
 
         if (rewardBasedVideo.IsLoaded()) {
@@ -175,17 +183,18 @@ public class AdDriver : MonoBehaviour {
 
     //Used when the game is starting to clean up the play area
     public void RemoveBanner() {
-    #if UNITY_EDITOR
-        return;
-    #else
-        this.bannerView.Destroy();//Destroy the current banner ad
-    #endif
+        #if UNITY_EDITOR
+            return;
+        #else
+            this.bannerView.Destroy();//Destroy the current banner ad
+            this.RequestBannerAd();//Request a new banner ad
+        #endif
     }
 
     //-----------------------------------------------------------------------------------------
     //Insterstitial Ad Event Handlers----------------------------------------------------------
     //-----------------------------------------------------------------------------------------
-    #region
+#region
     public void HandleOnAdLoaded(object sender, EventArgs args){
         MonoBehaviour.print("HandleAdLoaded event received");
     }
@@ -209,13 +218,13 @@ public class AdDriver : MonoBehaviour {
         MonoBehaviour.print("HandleAdLeavingApplication event received");
     }
 
-    #endregion
+#endregion
 
 
     //-----------------------------------------------------------------------------------------
     //Reward Video Event Handlers--------------------------------------------------------------
     //-----------------------------------------------------------------------------------------
-    #region
+#region
     public void HandleRewardBasedVideoLoaded(object sender, EventArgs args){
         MonoBehaviour.print("HandleRewardBasedVideoLoaded event received");
     }
@@ -245,5 +254,5 @@ public class AdDriver : MonoBehaviour {
     public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args){
         MonoBehaviour.print("HandleRewardBasedVideoLeftApplication event received");
     }
-    #endregion
+#endregion
 }

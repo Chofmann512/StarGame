@@ -80,6 +80,9 @@ public class GameDriver : MonoBehaviour {
 
     void Start () {
         isAdsRemoved = PlayerPrefs.GetString("AdsRemoved");
+        //TODO: change
+        isAdsRemoved = "false";
+        AdDriver.Instance.ShowBanner();
         Time.timeScale = 1.0f;//If the scene was reloaded, set timescale back to normal
 
 		multiplierNum = 1;
@@ -221,7 +224,7 @@ public class GameDriver : MonoBehaviour {
 			    AdDriver.Instance.loadCount++;
         #endif
 
-        //GameObject.Find("AdDriver").GetComponent<AdDriver>().RemoveBanner();
+        GameObject.Find("AdDriver").GetComponent<AdDriver>().RemoveBanner();
 
 		//Change to true that a game has been played
 		Replay.isReplay = 1;
