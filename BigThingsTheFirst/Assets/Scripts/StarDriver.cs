@@ -20,9 +20,11 @@ public class StarDriver : MonoBehaviour {
     public UIDriver uiDriver;
 
     public static bool bankShotted;
+    public static bool isPaused;
 
 	// Use this for initialization
 	void Start () {
+        isPaused = false;
 		flickBool = false;
 		bankShot = 1;
 
@@ -33,47 +35,51 @@ public class StarDriver : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-        if (!startMove) {
-            startFlick.position = new Vector3(transform.position.x, 3, transform.position.z);
-        }
 
-		if (Input.GetButtonDown ("Fire1")) {
-			Vector3 v3 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+        if (!isPaused) {
 
-			if (Vector3.Distance(v3, startFlick.position) < maxDistanceGrab) {
-				gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-				CancelInvoke ("cancelBankShot");
+            if (!startMove) {
+                startFlick.position = new Vector3(transform.position.x, 3, transform.position.z);
+            }
 
-                if (!GameDriver.lerping){
-                    bankShot = 1;
-                    bankShotted = false;
+            if (Input.GetButtonDown("Fire1")) {
+                Vector3 v3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                if (Vector3.Distance(v3, startFlick.position) < maxDistanceGrab) {
+                    gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    CancelInvoke("cancelBankShot");
+
+                    if (!GameDriver.lerping) {
+                        bankShot = 1;
+                        bankShotted = false;
+                    }
+
+                    startMove = true;
+                    flickBool = true;
+                    startFlick.position = v3;
+                    startV3 = startFlick.position;
                 }
+                else {
+                    flickBool = false;
+                    startMove = false;
+                }
+            }
 
-                startMove = true;
-				flickBool = true;
-				startFlick.position = v3;
-				startV3 = startFlick.position;
-			}
-            else {
-				flickBool = false;
-				startMove = false;
-			}
-		}
+            if (Input.GetButtonUp("Fire1") && startMove) {
 
-		if (Input.GetButtonUp ("Fire1")&& startMove) {
-			
-			Vector3 v3 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			endFlick.transform.position = v3;
-			startFlick.LookAt (endFlick);
-			forceAdd ();
-		}
+                Vector3 v3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                endFlick.transform.position = v3;
+                startFlick.LookAt(endFlick);
+                ForceAdd();
+            }
 
-        if (flickBool) {
-            flickTimer += Time.deltaTime;
-        }
-			
+            if (flickBool) {
+                flickTimer += Time.deltaTime;
+            }
+        }	
 	}
-	void forceAdd(){
+
+	private void ForceAdd(){
 
 		direction = (startV3 - endFlick.position).normalized;
 		startFlick.position = new Vector3 (transform.position.x, 3, transform.position.z);
@@ -126,6 +132,7 @@ public class StarDriver : MonoBehaviour {
 		CancelInvoke ("cancelBankShot");
 		Invoke ("cancelBankShot", 1.4f);
 	}
+
 	public void cancelBankShot(){
 
         if (GameDriver.lerping == false){
