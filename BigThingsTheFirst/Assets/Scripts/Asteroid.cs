@@ -7,10 +7,10 @@ public class Asteroid : MonoBehaviour {
 	public string color;
 	public float originalSpeed;
 
-	private float speed;
-	private bool isInitialized = false;
+	protected float speed;
+	protected bool isInitialized = false;
 
-	Rigidbody rb;
+	protected Rigidbody rb;
 
 	void Awake(){
 		rb = gameObject.GetComponent<Rigidbody> ();

@@ -7,8 +7,10 @@ public class AsteroidSpawner : MonoBehaviour {
 
 	public int maxThrust = 6;//The ceiling amount of speed to apply to a newly spawned asteroid
 	public List<GameObject> asteroids = new List<GameObject>();//Data container for asteroid gameobjects
+    [Header("Special Spawns")]
+    public GameObject bigAsteroid;
 
-	private List<GameObject> activeAsteroids;
+    private List<GameObject> activeAsteroids;
 	private GameObject curAsteroid;//The most recently spawned asteroid
 	private Vector3 upperLeftCorner;
 	private Vector3 upperRightCorner;
@@ -34,7 +36,7 @@ public class AsteroidSpawner : MonoBehaviour {
 		dirUpperRightCorner = GameObject.Find("/SpawnBoundaries/DirectionalUpperRightCorner").transform.position;
 		dirBottomLeftCorner = GameObject.Find("/SpawnBoundaries/DirectionalBottomLeftCorner").transform.position;
 		dirBottomRightCorner = GameObject.Find("/SpawnBoundaries/DirectionalBottomRightCorner").transform.position;
-		Debug.Log ("Initialized upperLeftCorner at : " + GameObject.Find("/SpawnBoundaries/UpperLeftCorner").transform.position);
+		//Debug.Log ("Initialized upperLeftCorner at : " + GameObject.Find("/SpawnBoundaries/UpperLeftCorner").transform.position);
 
 		activeAsteroids = gameObject.GetComponent<GameDriver> ().activeAsteroids;//Set a reference to the list of spawned asteroids to push asteroids into
 
@@ -44,7 +46,7 @@ public class AsteroidSpawner : MonoBehaviour {
 	}
 
 
-    public void SpawnAsteroid() {
+    public void SpawnAsteroid(bool isBig) {
 
 		if(asteroids.Count == 0){
 			Debug.Log ("The max amount of asteroids are currently spawned.");
@@ -78,12 +80,16 @@ public class AsteroidSpawner : MonoBehaviour {
                 break;
         }
 
+        if (isBig) {
+            GameObject temp = Instantiate(bigAsteroid, spawnPosition, Quaternion.identity)as GameObject;
+            ApplyForce(temp);
+            return;
+        }
+
 		int asteroidsIndex = Random.Range (0, asteroids.Count - 1);
 
 		curAsteroid = asteroids.ElementAt (asteroidsIndex);
 
-
-		//TODO: Reset back to old pooled position when the star catches the asteroid.
 		curAsteroid.transform.position = spawnPosition;
 		curAsteroid.SetActive (true);
 		asteroids.RemoveAt (asteroidsIndex);
@@ -92,6 +98,8 @@ public class AsteroidSpawner : MonoBehaviour {
 		curAsteroid.GetComponent<SphereCollider> ().radius = Random.Range (.0120f, .0149f);
 		ApplyForce(curAsteroid);
     }
+
+
 
 	//Ramps up starting speed of an asteroid based on how high your score is.
 	//The force is calculated as a percentage of the absolute maximum force

@@ -28,10 +28,7 @@ public class AdDriver : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            GetComponent<AudioSource>().Play();
-        }
-
+       
         if (isRewarded) {
             GameObject.Find("GameDriver").GetComponent<GameDriver>().ContinueGame();
             isRewarded = false;

@@ -11021,7 +11021,7 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 280243574}
-  m_Material: {fileID: 13400000, guid: dddb783f6bea6d640a63d90d9ecdaece, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -27657,7 +27657,7 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 716100120}
-  m_Material: {fileID: 13400000, guid: dddb783f6bea6d640a63d90d9ecdaece, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -38851,6 +38851,8 @@ MonoBehaviour:
   - {fileID: 652187854}
   - {fileID: 1071796537}
   - {fileID: 634831107}
+  bigAsteroid: {fileID: 1732808464865632, guid: 71309d70d68d8cb4690472383399d054,
+    type: 2}
 --- !u!114 &1117350381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54341,7 +54343,7 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1458468000}
-  m_Material: {fileID: 13400000, guid: dddb783f6bea6d640a63d90d9ecdaece, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -75255,7 +75257,7 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1996321711}
-  m_Material: {fileID: 13400000, guid: dddb783f6bea6d640a63d90d9ecdaece, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

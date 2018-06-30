@@ -78,11 +78,22 @@ public class GameDriver : MonoBehaviour {
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid(true);
+        }
+    }
+
     void Start () {
         isAdsRemoved = PlayerPrefs.GetString("AdsRemoved");
         //TODO: change
         isAdsRemoved = "false";
-        AdDriver.Instance.ShowBanner();
+
+        #if UNITY_EDITOR
+        #else
+            AdDriver.Instance.ShowBanner();
+        #endif
         Time.timeScale = 1.0f;//If the scene was reloaded, set timescale back to normal
 
 		multiplierNum = 1;
@@ -109,8 +120,27 @@ public class GameDriver : MonoBehaviour {
 		}
 	}
 
+    //An event called by the StarDriver when it detects a collision with a BIG asteroid
+    public void BigAsteroidCollision(GameObject star, GameObject asteroid) {
+        asteroid.GetComponent<BigAsteroid>().Hit(StarDriver.speed);
+
+    }
+
 	//An event called by the StarDriver when it detects a collision with an asteroid
 	public void AsteroidCollision(GameObject star, GameObject asteroid){
+
+        //First check if this is called by a big asteroid
+        if (star.tag == "BigAsteroid") {
+
+            if (soundEffectManager.activeInHierarchy)
+            {
+                asteroidCapture.Play();
+            }
+
+            StartCoroutine(Repool(asteroid, poolingPosition, 0.01f));
+
+            return;
+        }
 
 		if(star.GetComponent<StarDriver>().color == asteroid.GetComponent<Asteroid>().color){
 
@@ -196,12 +226,12 @@ public class GameDriver : MonoBehaviour {
 
 		if (!isGameOver) {
 			//Game is still going spawn an asteroid and calculate, time to spawn next asteroid
-			gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
+			gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid (false);
             asteroidSpawn.Play();
 			//Roll for a chance to spawn a second asteroid at the same time
 			//Between 0 and 11, max exclusive
 			if(Random.Range(0, 11) > 8 && gameObject.GetComponent<AsteroidSpawner>().maxThrust > 20){
-				gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid ();
+				gameObject.GetComponent<AsteroidSpawner>().SpawnAsteroid (false);
                 asteroidSpawn.Play();
             }
 			//Recurse to the next timer
@@ -218,11 +248,11 @@ public class GameDriver : MonoBehaviour {
         //Pre-processor directive to not call ads in the unity editor
         //TODO:Fix below
         isAdsRemoved = "false";
-        #if UNITY_EDITOR
-        #else
+#if UNITY_EDITOR
+#else
 			    //Increment ad interval
 			    AdDriver.Instance.loadCount++;
-        #endif
+#endif
 
         GameObject.Find("AdDriver").GetComponent<AdDriver>().RemoveBanner();
 
@@ -314,14 +344,14 @@ public class GameDriver : MonoBehaviour {
 		scoreText.SetActive (false);
 		GetComponent<UIDriver>().ToggleGameOverPanel();
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
             if(!hasContinued){
                 continueUnit.SetActive(true);
             }
             else{
                 continueUnit.SetActive(false);
             }
-        #else
+#else
             if (AdDriver.Instance.IsVideoLoaded() && !hasContinued && isAdsRemoved != "true"){
                 //Player has not paid for ads, but can watch a video ad to continue
                 videoAdUnit.SetActive(true);
@@ -337,15 +367,15 @@ public class GameDriver : MonoBehaviour {
                 videoAdUnit.SetActive(false);
                 continueUnit.SetActive(false);
             }
-        #endif
+#endif
 
         GameObject.Find ("/Canvas/GameOverPanel/EndScoreText").GetComponent<Text> ().text = "Score : " + score.ToString();//Update ending score text
 		bestScoreText.GetComponent<Text>().text = "Best Score : " + highestScore.ToString(); //Update highest score text
 		GameObject.Find("/Canvas/GameOverPanel").GetComponentInChildren<Animator>().Play("Text_Breathe");
 
         //Pre-processor directive to not call ads in the unity editor
-    #if UNITY_EDITOR
-    #else
+#if UNITY_EDITOR
+#else
          if(isAdsRemoved != "true"){
 		    //Attempt to show interstitial
 		   if(AdDriver.Instance.loadCount % AdDriver.Instance.interstitialInterval == 0 && !hasContinued){
@@ -353,7 +383,7 @@ public class GameDriver : MonoBehaviour {
 		        AdDriver.Instance.ShowInterstitial();
 		  }
         }
-    #endif
+#endif
 
         StopAllCoroutines();
 		//Submit the score to the Google Play leaderboards

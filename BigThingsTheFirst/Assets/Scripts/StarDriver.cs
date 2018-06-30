@@ -19,11 +19,14 @@ public class StarDriver : MonoBehaviour {
     public GameObject soundEffectManager;
     public UIDriver uiDriver;
 
+    public static float speed;
     public static bool bankShotted;
     public static bool isPaused;
 
+    private Rigidbody rb;
 	// Use this for initialization
 	void Start () {
+        rb = GetComponent<Rigidbody>();
         isPaused = false;
 		flickBool = false;
 		bankShot = 1;
@@ -35,6 +38,8 @@ public class StarDriver : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+
+        speed = rb.velocity.magnitude;
 
         if (!isPaused) {
 
@@ -115,15 +120,18 @@ public class StarDriver : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 
-		if (other.tag == "Asteroid") {
-			gameDriver.AsteroidCollision (this.gameObject, other.gameObject);
-		}
-		else if(other.tag == "Boundary"){
-			BankShot ();
-		}
-		else {
-			return;
-		}
+        if (other.tag == "Asteroid") {
+            gameDriver.AsteroidCollision(this.gameObject, other.gameObject);
+        }
+        else if (other.tag == "BigAsteroid") {
+            gameDriver.BigAsteroidCollision(this.gameObject, other.gameObject);
+        }
+        else if (other.tag == "Boundary") {
+            BankShot();
+        }
+        else {
+            return;
+        }
 	}
 
 	public void BankShot(){
